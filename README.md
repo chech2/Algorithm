@@ -32,6 +32,7 @@
 |2525. 오븐 시계|[링크](./%EB%B0%B1%EC%A4%80/Bronze/2525.%E2%80%85%EC%98%A4%EB%B8%90%E2%80%85%EC%8B%9C%EA%B3%84/%EC%98%A4%EB%B8%90%E2%80%85%EC%8B%9C%EA%B3%84.java)|
 |25304. 영수증|[링크](./%EB%B0%B1%EC%A4%80/Bronze/25304.%E2%80%85%EC%98%81%EC%88%98%EC%A6%9D/%EC%98%81%EC%88%98%EC%A6%9D.java)|
 |2557. Hello World|[링크](./%EB%B0%B1%EC%A4%80/Bronze/2557.%E2%80%85Hello%E2%80%85World/Hello%E2%80%85World.java)|
+|2562. 최댓값|[링크](./%EB%B0%B1%EC%A4%80/Bronze/2562.%E2%80%85%EC%B5%9C%EB%8C%93%EA%B0%92/%EC%B5%9C%EB%8C%93%EA%B0%92.java)|
 |2588. 곱셈|[링크](./%EB%B0%B1%EC%A4%80/Bronze/2588.%E2%80%85%EA%B3%B1%EC%85%88/%EA%B3%B1%EC%85%88.java)|
 |2739. 구구단|[링크](./%EB%B0%B1%EC%A4%80/Bronze/2739.%E2%80%85%EA%B5%AC%EA%B5%AC%EB%8B%A8/%EA%B5%AC%EA%B5%AC%EB%8B%A8.java)|
 |2753. 윤년|[링크](./%EB%B0%B1%EC%A4%80/Bronze/2753.%E2%80%85%EC%9C%A4%EB%85%84/%EC%9C%A4%EB%85%84.java)|
