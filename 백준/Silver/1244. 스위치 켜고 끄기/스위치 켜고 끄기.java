@@ -30,10 +30,11 @@ public class Main {
 		}
 
 
-//0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
+		
 		
 		//스위치 개수
 		int switchcnt = Integer.parseInt(br.readLine());
@@ -61,10 +62,10 @@ public class Main {
 			}
 		}
 		for (int i = 0; i < switchcnt; i++) {
-			if(i != 0 && i % 20 == 0) System.out.println();
-			System.out.print(switcharr[i] + " ");
+			if(i != 0 && i % 20 == 0) sb.append("\n");
+			sb.append(switcharr[i] + " ");
 		}
-		System.out.println();
+		System.out.println(sb);
 		
 	}
 
