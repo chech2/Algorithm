@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		LinkedList<Integer> sum = new LinkedList<>();
+		int sum = 0;
 		LinkedList<Integer> origin = new LinkedList<>();
 
 		int min = Integer.MAX_VALUE;
@@ -20,13 +20,11 @@ public class Main {
 		for (int i = 0; i < N; i++) {
 			origin.offerLast(Integer.parseInt(st.nextToken()));			
 			cnt++;
-			if(sum.isEmpty())
-				sum.add(origin.peekLast());
-			else
-				sum.offerLast(sum.peekLast() + origin.peekLast());
-			if(S <= sum.peekLast()) {
-				while(S <= sum.peekLast()) {
-					sum.offerLast(sum.pollLast() - origin.pollFirst());
+			sum += origin.peekLast();
+					
+			if(S <= sum) {
+				while(S <= sum) {
+					sum -= origin.pollFirst();
 					cnt--;
 				}
 				if(cnt < min) {
