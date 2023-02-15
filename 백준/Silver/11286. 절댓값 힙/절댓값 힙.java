@@ -17,13 +17,14 @@ public class Main {
 			int tmp = Integer.parseInt(br.readLine());
 			if(tmp == 0) {
 				if(pq.isEmpty())
-					System.out.println(0);
+					sb.append(0).append("\n");
 				else
-					System.out.println(pq.poll()[1]);
+					sb.append(pq.poll()[1]).append("\n");
 			}else {
 				pq.offer(new int[] {Math.abs(tmp),tmp});
 			}
 		}
+		System.out.println(sb);
 		
 	}
 
