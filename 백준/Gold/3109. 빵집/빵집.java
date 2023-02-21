@@ -4,57 +4,59 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	static int result, R, C, check[][];
-	static String map[][];
+	static int R, C;
+	static char map[][]; // . 진행가능, * 건물
 	static int []dx = new int[]{-1, 0, 1}; //위로 대각선, 오른쪽, 아래로 대각선
+	static int count;
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		R = Integer.parseInt(st.nextToken()); 
 		C = Integer.parseInt(st.nextToken());
-		check = new int [R][C];
-		map = new String[R][C]; //0번열 인덱스    -> 빵집
+		map = new char[R][C]; //0번열 인덱스    -> 빵집
 								//마지막열 인덱스 -> 도둑놈 빵집
 		
 		for (int i = 0; i < R; i++)
-			 map[i] = br.readLine().split("");
+			 map[i] = br.readLine().toCharArray();
 		//==============input setting end==========================
 		
+		//모든 행에 대해 연결 시도
 		for (int i = 0; i < R; i++) {
-			dfs(i,0); //0,0 : 1,0 : 2,0 : 3,0 : 4,0 시작
+			connect(i, 0); //i는 행값, 0은 열값
 		}
-		 
-		System.out.println(result);
+        System.out.println(count);
 	}
 	
-	public static boolean dfs(int row, int col) { //colNo: 인덱스로 사용될 열번호
-		check[row][col] = 1; //일단 들어왔으면 가능한 것임
-		
-		//기저 조건, 도둑놈 가게 도착완료!!
-		if(col == C - 1) {
-			result++;
+	
+	//(x,y)위치에서 시작해서 3방향으로 가 보는 메소드 갈 수 있으면 true, 못 가면 false
+	private static boolean connect(int x, int y) {
+		//기저조건(종료): 원웅이네 도착
+		if(y == C - 1) {
+			count++;
 			return true;
 		}
-		
-		int tmp = -500;
-		for (int x : dx) {
-			//다음 위치 후보가 map범위 벗어나는 경우
-			if (row + x < 0 || R <= row + x || C <= col + 1) continue;
-			//다음 위치 후보에 건물이 있는 경우
-			if(map[row + x][col + 1].equals("x")) continue;
-			//이미 한번 왔다간 곳인 경우
-			if(check[row + x][col + 1] == 1) continue;
+		//아니면 계속해서 3방향 조사 후 전진
+		for (int i = 0; i < 3; i++) { //우상, 우, 우하 
+			int nx = x + dx[i];
+			int ny = y + 1;
 			
-			//다음위치 선정완료
-			tmp = x;
-			if(dfs(row + x, col+1)) return true;
-		}
-		//다음 위치 없음 -> 되돌아 가야 됨
-		//if(tmp == -500) {
-		//	check[row][col] = 0;
-			//return false;
-		//}
-		//현재 위치에서 갈 수 있는 길이 있다면?? -> 그 좌표 가지고 또 그다음을 확인하러 가야 됨
+			//이동할 좌표를 계산 했을때 배열 안에 있는지 체크
+			if(isIn(nx, ny) && map[nx][ny] == '.') {
+				map[nx][ny] = '=';
+				boolean result = connect(nx, ny);
+				if(result) return true; //이거 결과가 true이면 더이상 볼 필요도 없음, 
+										//도착한 것이므로!
+			}
+		} 
+		//루프를 다 돌고도 함수를 못벗어났다면 3방향 모두 안된다는 뜻
 		return false;
 	}
+
+
+	private static boolean isIn(int nx, int ny) {
+		return nx >=0 && ny >= 0 && nx < R && ny < C;
+	}
+	
+	
+	
 }
