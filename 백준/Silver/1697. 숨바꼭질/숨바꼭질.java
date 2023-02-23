@@ -10,7 +10,7 @@ public class Main {
 	static int Subin;
 	static int bro;
 	static int Time = 0;
-	static boolean[] visi = new boolean[200001];
+	static boolean[] visi = new boolean[100003];
 	public static void main(String[] args) throws Exception {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,9 +30,9 @@ public class Main {
 				break;
 			}
 			for (int i = 0; i < move.length; i++) {
-				if(now[0] + move[i] < 0 || 200000 < now[0] + move[i]) continue;
+				if(now[0] + move[i] < 0 || 100002 < now[0] + move[i]) continue;
 				if(i == 2) {
-					if(now[0] * move[2] < 200000 && !visi[now[0] * move[2]]) {
+					if(now[0] * move[2] < 100002 && !visi[now[0] * move[2]]) {
 						visi[now[0] * move[2]] = true; //이제 큐에 넣을것이고 확실히 방문할 것이므로 체크
 						q.offer(new int[] {now[0] * move[2], now[1] + 1});
 					}
