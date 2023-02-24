@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -19,10 +17,11 @@ public class Main {
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		arr = new char[R][C];
-		for (int i = 0; i < R; i++) arr[i] = br.readLine().toCharArray();
-	
-		//List<String> horse = new ArrayList<>();
-		//horse.add(String.valueOf(arr[0][0]));
+		
+		for (int i = 0; i < R; i++) { 
+			arr[i] = br.readLine().toCharArray();
+		}
+		
 		horse[arr[0][0] - 'A'] = 1;
 		counting(0, 0, 1);
 		
@@ -31,6 +30,7 @@ public class Main {
 	}
 	
 	private static void counting(int x, int y, int tmp) {
+		result = Math.max(tmp, result);
 		for (int i = 0; i < 4; i++) {
 				if((x + dx[i] < 0 || x + dx[i] >= R) || (y + dy[i] < 0 || y + dy[i] >= C)) continue;
 
@@ -42,10 +42,5 @@ public class Main {
 				counting(x + dx[i], y + dy[i], tmp + 1);
 				horse[arr[x + dx[i]][y + dy[i]] - 'A'] = 0;
 		}
-		int cnt = 0;
-		for (int i = 0; i < 28; i++) {
-			if(horse[i] == 1) cnt++;
-		}
-		result = Math.max(result , cnt);
 	}
 }
