@@ -79,10 +79,16 @@ public class Solution {
 			
 			//배열 원본의 상태로 초기화, 초기화하지 않으면 dfs or bfs로 들어가면서 나온 결과에 영향을 받음
 			copy(map, newMap);
-			//벽돌 뿌수기
-			boom(newMap, r, c);
+			
+			//BFS벽돌 뿌수기
+			//boom(newMap, r, c);
+			
+			//DFS벽돌 뿌수기
+			boom(newMap, r, c, map[r][c]);
+			
 			//벽돌 내리기
 			down(newMap);
+			
 			// 다음 구슬 던지러 가기
 			if(go(count + 1, newMap)) return true;
 			
@@ -109,40 +115,69 @@ public class Solution {
 		}		
 	}
 
-	//BFS 벽돌 부수기 
-	private static void boom(int [][]map, int r, int c) {
-		Queue<Point> queue = new ArrayDeque<>();
-		if(map[r][c] > 1) {
-			queue.offer(new Point(r, c, map[r][c]));
-		}
-		//방문체크
+//	//BFS 벽돌 부수기 
+//	private static void boom(int [][]map, int r, int c) {
+//		Queue<Point> queue = new ArrayDeque<>();
+//		if(map[r][c] > 1) {
+//			queue.offer(new Point(r, c, map[r][c]));
+//		}
+//		//방문체크
+//		map[r][c] = 0;
+//		
+//		Point current;
+//		while(!queue.isEmpty()) {
+//			current = queue.poll();
+//			
+//			//현 벽돌의 cnt - 1만큼 4방 체크,
+//			//가다가 중간에 빈칸을 만나도 상관 ㄴㄴ, 계속 진행
+//			//방향 1개 잡고 쭉 밀어버림
+//			for (int d = 0; d < 4; d++) {
+//				int nr = current.r;
+//				int nc = current.c;				
+//				for(int k = 1; k <= current.cnt - 1; k++) {
+//					nr += dr[d];
+//					nc += dc[d];
+//					
+//					//배열 내부 && 벽돌이 없다면 굳이 큐에 넣을 필요는 없음(방문 체크조차 필요 없음)
+//					if(nr >= 0 && nr < H && nc >= 0 && nc < W 
+//							&& map[nr][nc] > 0) {
+//						
+//						//처음 큐에 집어넣었을 때와 동일한 작업을 반복함
+//						if(map[nr][nc] > 1) {
+//							queue.offer(new Point(nr, nc, map[nr][nc]));
+//						}
+//						//방문체크
+//						map[nr][nc] = 0;
+//					}
+//				}
+//			}
+//		}
+//	}
+	
+	
+	//DFS 벽돌 부수기 
+	private static void boom(int [][]map, int r, int c, int cnt) {
+	//첫 호출도 같은 로직으로 생각한다면 방문 체크와 재귀 호출의 여부 체크해야 됨
 		map[r][c] = 0;
+		if(cnt == 1) return;
 		
-		Point current;
-		while(!queue.isEmpty()) {
-			current = queue.poll();
-			
-			//현 벽돌의 cnt - 1만큼 4방 체크,
-			//가다가 중간에 빈칸을 만나도 상관 ㄴㄴ, 계속 진행
-			//방향 1개 잡고 쭉 밀어버림
-			for (int d = 0; d < 4; d++) {
-				int nr = current.r;
-				int nc = current.c;				
-				for(int k = 1; k <= current.cnt - 1; k++) {
-					nr += dr[d];
-					nc += dc[d];
+		
+		//현 벽돌의 cnt - 1만큼 4방 체크,
+		//가다가 중간에 빈칸을 만나도 상관 ㄴㄴ, 계속 진행
+		//방향 1개 잡고 쭉 밀어버림
+		for (int d = 0; d < 4; d++) {
+			int nr = r;
+			int nc = c;				
+			for(int k = 1; k <= cnt - 1; k++) {
+				nr += dr[d];
+				nc += dc[d];
+				
+				//배열 내부 && 벽돌이 없다면 굳이 큐에 넣을 필요는 없음(방문 체크조차 필요 없음)
+				if(nr >= 0 && nr < H && nc >= 0 && nc < W 
+						&& map[nr][nc] > 0) {
 					
-					//배열 내부 && 벽돌이 없다면 굳이 큐에 넣을 필요는 없음(방문 체크조차 필요 없음)
-					if(nr >= 0 && nr < H && nc >= 0 && nc < W 
-							&& map[nr][nc] > 0) {
-						
-						//처음 큐에 집어넣었을 때와 동일한 작업을 반복함
-						if(map[nr][nc] > 1) {
-							queue.offer(new Point(nr, nc, map[nr][nc]));
-						}
-						//방문체크
-						map[nr][nc] = 0;
-					}
+				//처음 큐에 집어넣었을 때와 동일한 작업을 반복함
+				boom(map,nr, nc, map[nr][nc]);
 				}
 			}
 		}
