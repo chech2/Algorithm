@@ -112,6 +112,7 @@
 |6198. 옥상 정원 꾸미기|[링크](./%EB%B0%B1%EC%A4%80/Gold/6198.%E2%80%85%EC%98%A5%EC%83%81%E2%80%85%EC%A0%95%EC%9B%90%E2%80%85%EA%BE%B8%EB%AF%B8%EA%B8%B0/README.md)|
 |6497. 전력난|[링크](./%EB%B0%B1%EC%A4%80/Gold/6497.%E2%80%85%EC%A0%84%EB%A0%A5%EB%82%9C/README.md)|
 |7576. 토마토|[링크](./%EB%B0%B1%EC%A4%80/Gold/7576.%E2%80%85%ED%86%A0%EB%A7%88%ED%86%A0/README.md)|
+|9205. 맥주 마시면서 걸어가기|[링크](./%EB%B0%B1%EC%A4%80/Gold/9205.%E2%80%85%EB%A7%A5%EC%A3%BC%E2%80%85%EB%A7%88%EC%8B%9C%EB%A9%B4%EC%84%9C%E2%80%85%EA%B1%B8%EC%96%B4%EA%B0%80%EA%B8%B0/README.md)|
 ### 🚀 Platinum
 | 문제번호 | 링크 |
 | ----- | ----- |
