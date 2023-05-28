@@ -12,6 +12,8 @@ public class Main {
         Arrays.fill(memo, -1);
         memo[0] = 0;
         memo[1] = 1;
+        if(1 < N)
+        memo[2] = 2;
 
         memo[N] = dp(N);
         if(memo[N] % 2 == 0) System.out.println("CY");
