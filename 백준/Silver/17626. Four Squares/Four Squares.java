@@ -1,41 +1,28 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    static int N, M, end;
-    static int result[];
-    static int memo[] = new int[708];
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        int now;
-
-        memo[0] = 0;
-        for (int i = 1; i < 709; i++) {
-            now = i * i;
-            if (N < now) break;
-            memo[i] = now;
-            end = i;
-        }
-        for (int i = 1; i < 5; i++) {
-            M = i;
-            result = new int[M];
-            cmbi( 0, 0);
-        }
-
-    }
-
-    static void cmbi(int cnt, int ans) {
-        if (cnt == M) {
-            if (ans == N) {
-                System.out.println(M);
-                System.exit(0);
-            }
-            return;
-        }
-        for (int i = 1; i <= end; i++) {
-            cmbi( cnt + 1, ans + memo[i]);
-        }
-    }
+	private static int N;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		
+		System.out.println(sol(N));
+		
+	}
+	public static int sol(int n) {
+		if(Math.pow((int)Math.sqrt(n), 2)==n)return 1;
+		
+		for(int i=1;i<(int)Math.sqrt(n)+1;i++) {
+			if(Math.pow((int)Math.sqrt(n-Math.pow(i, 2)), 2)==n-Math.pow(i, 2))return 2;
+		}
+		
+		for(int i=1;i<(int)Math.sqrt(n)+1;i++) {
+			for(int j=1;j<(int)Math.sqrt(Math.pow(i, 2))+1;j++) {
+				if(Math.pow((int)Math.sqrt(n-Math.pow(i, 2)-Math.pow(j, 2)), 2)==n-Math.pow(i, 2)-Math.pow(j, 2))return 3;
+			}
+		}
+		return 4;
+	}
 }
