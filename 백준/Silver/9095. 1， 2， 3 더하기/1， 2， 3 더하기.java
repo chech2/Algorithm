@@ -6,17 +6,17 @@ public class Main {
     static int memo[];
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        memo = new int[11];
+        Arrays.fill(memo, -1);
+        memo[0] = 0;
+        memo[1] = 1;
+        memo[2] = 2;
+        memo[3] = 4;
+
         TC = sc.nextInt();
         for (int t = 0; t < TC; t++) {
             N = sc.nextInt();
-            memo = new int[11];
-            Arrays.fill(memo, -1);
-            memo[0] = 0;
-            memo[1] = 1;
-            memo[2] = 2;
-            memo[3] = 4;
-            memo[N] = dp(N);
-            System.out.println(memo[N]);
+            System.out.println( dp(N));
         }
 
 
