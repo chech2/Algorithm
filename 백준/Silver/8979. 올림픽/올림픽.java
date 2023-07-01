@@ -6,7 +6,8 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int N, K;
-    static int rank = 0;
+    static int rank = 1;
+
     static PriorityQueue<country> list = new PriorityQueue<>(
             (o1, o2) -> {
                 if(o1.gold != o2.gold){
@@ -14,10 +15,6 @@ public class Main {
                 }else if (o1.silver != o2.silver ) {
                     return  o2.silver - o1.silver;
                 }else{
-                    if(o2.bronze == o1.bronze)  {
-                        o2.status = 1;
-                        o1.status = 1;
-                    }
                     return o2.bronze - o1.bronze;
                 }
             });
@@ -38,21 +35,44 @@ public class Main {
             list.add(new country(no, gold, silver, bronze));
         }
         int same = 0;
-        for (int i = 0; i < N; i++) {
-            country test = list.poll();
-            if(test.status == 1){
-                if(same == 0) rank++;
-                same++;
+        country pre = list.poll();
+        if(pre.no == K){
+            System.out.println(1);
+            System.exit(0);
+        }
+        for (int i = 1; i < N; i++) {
+            country now = list.poll();
+            if (now.gold != pre.gold) {
+                if (same != 0) {
+                    rank += same;
+                    same = 0;
+                }
+                rank++;
+            } else if (now.silver != pre.silver) {
+                if (same != 0) {
+                    rank += same;
+                    same = 0;
+                }
+                rank++;
+            } else { //동메달
+                if (now.bronze == pre.bronze) {
+                    same++;
+                } else {
+                    if (same != 0) {
+                        rank += same;
+                        same = 0;
+                    }
+                    rank++;
+                }
             }
-            else if(test.status == 0 && same != 0){
-                rank += same;
-                same = 0;
-            } else if (test.status == 0 && same == 0) rank++;
-            if(test.no == K){
+            pre = now;
+            if (now.no == K) {
                 System.out.println(rank);
-                System.exit(0);
+                break;
             }
         }
+        
+
     }
 
     public static class country{
