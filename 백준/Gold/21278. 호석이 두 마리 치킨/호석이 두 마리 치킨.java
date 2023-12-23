@@ -10,7 +10,8 @@ public class Main {
     static int[] visited;
     static PriorityQueue<node> result = new PriorityQueue<>((o1, o2) -> {
         if(o1.value == o2.value){
-            return o1.num1 - o2.num2;
+            if(o1.num1 == o2.num1) return o1.num2 - o2.num2;
+            return o1.num1 - o2.num1;
         }else {
             return o1.value - o2.value;
         }
