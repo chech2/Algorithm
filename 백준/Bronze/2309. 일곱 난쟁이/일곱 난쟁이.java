@@ -1,41 +1,39 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
-
-    static int[] dwarf = new int[9];
-    static int[] sub = new int[2];
-    static int start, end, cm, cnt, total;
+    static boolean[] visited = new boolean[9];
+    static int[] people = new int[9];
     public static void main(String[] args) throws Exception{
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         for (int i = 0; i < 9; i++) {
-            dwarf[i] = sc.nextInt();
-            total += dwarf[i];
+            people[i] = Integer.parseInt(br.readLine());
         }
-        Arrays.sort(dwarf);
+        Arrays.sort(people);
         combi(0, 0);
+
     }
-    public static void combi(int cnt, int start){
-        if(cnt == 2){
-            int check = 0;
+
+    public static void combi(int start, int cnt){
+        if(cnt == 7){
+            int sum = 0;
             for (int i = 0; i < 9; i++) {
-                if(sub[0] == dwarf[i] || sub[1] == dwarf[i]) continue;
-                check += dwarf[i];
+                if(visited[i]) sum += people[i];
             }
-            if(check == 100){
-                for (int j = 0; j < 9; j++) {
-                    if(sub[0] == dwarf[j] || sub[1] == dwarf[j]) continue;
-                    System.out.print(dwarf[j] + " ");
+            if(sum == 100){
+                for (int i = 0; i < 9; i++) {
+                    if(visited[i]) System.out.println(people[i]);
                 }
                 System.exit(0);
             }
             return;
         }
         for (int i = start; i < 9; i++) {
-            sub[cnt] = dwarf[i];
-            combi(cnt + 1, i + 1);
+            visited[i] = true;
+            combi(i + 1, cnt + 1);
+            visited[i] = false;
         }
     }
-
 }
