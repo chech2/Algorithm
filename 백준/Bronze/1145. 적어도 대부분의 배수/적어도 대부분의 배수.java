@@ -1,15 +1,17 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class Main {
 
     static int[] input = new int[5];
     static int maxNum, minNum, cnt;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        for (int i = 0; i < 5; i++) {
-            input[i] = sc.nextInt();
-        }
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        input = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer :: parseInt).toArray();
+
 
         Arrays.sort(input);
         maxNum = input[4] * input[3] * input[2];
