@@ -30,7 +30,7 @@ public class Main {
             for (int i = 1; i < student / rooms[0] + 1; i++) {
                 for (int j = 1; j < student / rooms[1] + 1; j++) {
                     for (int k = 1; k < rooms[2]; k++) {
-                        if(rooms[0] * i + rooms[1] * j + rooms[2] == student){
+                        if(rooms[0] * i + rooms[1] * j + rooms[2] * k == student){
                             result = 1;
                             break;
                         }
