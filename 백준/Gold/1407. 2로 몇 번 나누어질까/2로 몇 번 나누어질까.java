@@ -1,33 +1,32 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    static long A, B;
+    public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        A = Long.parseLong(st.nextToken()) - 1;
+        B = Long.parseLong(st.nextToken());
 
-        long A = Long.parseLong(input[0]);
-        long B = Long.parseLong(input[1]);
-
-        System.out.println(function(B)-function(A-1));
+        System.out.println(countingPower(B) - countingPower(A));
     }
 
-    static long function(long x) {
-        long sum = 0;
-        long y;
-        long i = 1;
+    // 2의 x승이 몇개인가??
+    public static long countingPower(long number){
+        long cnt;     // 2의 n승이 몇개인가?
+        long sum = 0; // 2의 n승의 합
+        long pow = 1; // 2의 n승에서 n 담당
 
-        while(x>0) {
-            if(x%2==0)
-                y = x/2;
-            else
-                y = x/2+1;
-
-            sum += y*i;
-            x -= y;
-            i*=2;
+        while(0 < number){
+            if(number % 2 == 0) cnt = number / 2;
+            else cnt = number / 2 + 1;
+            sum += cnt * pow;
+            number -= cnt;
+            pow *= 2;
         }
 
         return sum;
