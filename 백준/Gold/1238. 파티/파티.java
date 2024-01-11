@@ -2,13 +2,25 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int n, x, m, ans;
-    static int[][] map;
+    static int[][] d;
+    static ArrayList<node>[] map ;
+
+    public static class node{
+        int num, len;
+        node(int num, int len){
+            this.num = num;
+            this.len = len;
+        }
+    }
+
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -19,10 +31,12 @@ public class Main {
         x = Integer.parseInt(st.nextToken());
         ans = Integer.MIN_VALUE;
 
-        map = new int[n + 1][n + 1];
+        d = new int[n + 1][n + 1];
+        map = new ArrayList[n + 1];
         for (int i = 1; i < n + 1; i++) {
-            Arrays.fill(map[i], 2000000);
-            map[i][i] = 0;
+            Arrays.fill(d[i], 2000000);
+            map[i] = new ArrayList<>();
+            d[i][i] = 0;
         }
 
         int start, end, len;
@@ -32,22 +46,37 @@ public class Main {
             end = Integer.parseInt(st.nextToken());
             len = Integer.parseInt(st.nextToken());
 
-            map[start][end] = len;
-        }
-
-        for (int k = 1; k < n + 1; k++) {
-            for (int i = 1; i < n + 1; i++) {
-                for (int j = 1; j < n + 1; j++) {
-                    map[i][j] = Math.min(map[i][j], map[i][k] + map[k][j]);
-                }
-            }
+            map[start].add(new node(end, len));
         }
 
         for (int i = 1; i < n + 1; i++) {
-            if(i == x) continue;
-            ans = Math.max(map[i][x] + map[x][i], ans);
+            dijk(i);
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            ans = Math.max(d[i][x] + d[x][i], ans);
         }
         System.out.println(ans);
 
+    }
+
+    public static void dijk(int start){
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+
+        q.add(start);
+        int now;
+        node next;
+        while(!q.isEmpty()){
+            now = q.poll();
+
+            for (int i = 0; i < map[now].size(); i++) {
+                next = map[now].get(i);
+
+                if(d[start][now] + next.len < d[start][next.num]){
+                    d[start][next.num] = d[start][now] + next.len;
+                    q.add(next.num);
+                }
+            }
+        }
     }
 }
