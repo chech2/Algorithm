@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n, m;
-    static int[] result;
+    static int[] result, degrees;
     static ArrayList<Integer>[] list;
 
     public static void main(String[] args) throws Exception{
@@ -20,12 +20,12 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         result = new int[n + 1];
+        degrees = new int[n + 1]; //진입차수
         list = new ArrayList[n + 1];
 
         for (int i = 1; i < n + 1; i++) {
             list[i] = new ArrayList<>();
         }
-
 
         int pre, sub;
         for (int i = 0; i < m; i++) {
@@ -34,11 +34,12 @@ public class Main {
             sub = Integer.parseInt(st.nextToken());
 
             list[sub].add(pre);
+            degrees[sub]++;
         }
 
         ArrayDeque<Integer> q = new ArrayDeque<>();
         for (int i = 1; i < n + 1; i++) {
-            if(list[i].size() == 0) {
+            if(degrees[i] == 0) {
                 q.add(i);
                 result[i] = 1;
             }
@@ -46,20 +47,20 @@ public class Main {
 
         int now;
         while(!q.isEmpty()){
-            now = q.poll();
+            now = q.poll(); // 진입차수가 0인 과목인 선수 과목
 
-            for (int i = 1; i < n + 1; i++) {
-                if(i == now) continue;
-                for (int j = 0; j < list[i].size(); j++) {
-                    if(list[i].get(j) == now) {
-                        list[i].remove(j);
-                    }
-                    if(list[i].size() == 0){
-                        result[i] = result[now] + 1;
-                        q.add(i);
-                    }
+            // 다음 과목 찾기
+            for (int next = 1; next < n + 1; next++) {
+
+                //같은 과목이거나 이미 선수 과목이 없는 경우 제외
+                if(next == now || degrees[next] == 0) continue;
+
+                //now가 next의 선수 과목인 경우 -> 진입 차수 -1
+                if(list[next].contains(now)) degrees[next]--;
+                if(degrees[next] == 0){
+                    result[next] = result[now] + 1;
+                    q.add(next);
                 }
-
             }
         }
 
