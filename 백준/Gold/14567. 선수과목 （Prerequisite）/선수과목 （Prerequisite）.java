@@ -4,13 +4,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     static int n, m;
     static int[] result, degrees;
-    static ArrayList<Integer>[] list;
+    static int[][] list;
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,11 +20,8 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         result = new int[n + 1];
         degrees = new int[n + 1]; //진입차수
-        list = new ArrayList[n + 1];
+        list = new int[n + 1][n + 1];
 
-        for (int i = 1; i < n + 1; i++) {
-            list[i] = new ArrayList<>();
-        }
 
         int pre, sub;
         for (int i = 0; i < m; i++) {
@@ -33,7 +29,7 @@ public class Main {
             pre = Integer.parseInt(st.nextToken());
             sub = Integer.parseInt(st.nextToken());
 
-            list[sub].add(pre);
+            list[sub][pre] = 1;
             degrees[sub]++;
         }
 
@@ -56,7 +52,10 @@ public class Main {
                 if(next == now || degrees[next] == 0) continue;
 
                 //now가 next의 선수 과목인 경우 -> 진입 차수 -1
-                if(list[next].contains(now)) degrees[next]--;
+                if(list[next][now] == 1){
+                    degrees[next]--;
+                    list[next][now] = 0;
+                }
                 if(degrees[next] == 0){
                     result[next] = result[now] + 1;
                     q.add(next);
