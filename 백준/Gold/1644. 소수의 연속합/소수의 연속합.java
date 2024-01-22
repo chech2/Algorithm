@@ -1,52 +1,61 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+
 public class Main {
-    static int N, cnt, start, end, sum, size;
-    static boolean decimal[];
-    static ArrayList<Integer> number = new ArrayList<>();
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+    static int n, primeCnt;
+    static int[] primeList;
+    static boolean[] isPrime;
 
-        decimal = new boolean[N + 1];
-        Arrays.fill(decimal, true);
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        decimal[0] = false;
-        decimal[1] = false;
+        n = Integer.parseInt(br.readLine());
+        isPrime = new boolean[n + 1];
+        primeList = new int[n + 1];
+        Arrays.fill(isPrime, true);
+        Arrays.fill(primeList, -1);
+        findPrime();
 
-        //에라토스테네스의 체로 거르기
-        for (int i = 2; i * i <= N; i++) {
-            if(!decimal[i]) continue;
-            for (int j = i * i; j <= N; j += i) {
-                decimal[j] = false;
+        bw.append(primeSum() + "\n");
+        bw.flush();
+        bw.close();
+    }
+
+    public static void findPrime(){
+        isPrime[0] = false;
+        isPrime[1] = false;
+
+        for(int i = 2; i <= n / i; i++){
+            if(!isPrime[i]) continue;
+            for (int j = i * 2; j <= n; j += i) {
+                isPrime[j] = false;
             }
         }
 
-        for (int i = 2; i < N + 1; i++) {
-            if(decimal[i]) number.add(i);
-        }
-
-        size = number.size();
-        if(size == 0){
-            System.out.println(0);
-            System.exit(0);
-        }
-
-        //투 포인터 이용해서 체크하기
-        sum = number.get(start);
-        while(true){
-            if(sum < N){
-                end++;
-                if(size <= end) break;
-                sum += number.get(end);
-            }else if(N < sum){
-                sum -= number.get(start);
-                start++;
-            } else if (N == sum) {
-                cnt++;
-                sum -= number.get(start);
-                start++;
+        for (int i = 2; i < n + 1; i++) {
+            if(isPrime[i]) {
+                primeList[primeCnt] = i;
+                primeCnt++;
             }
         }
-        System.out.println(cnt);
+    }
+
+    public static int primeSum(){
+        int start = 0, end = 0, ans = 0;
+        int tmp = primeList[start];
+
+        while(end < primeCnt){
+            if(n <= tmp){
+                if(tmp == n) ans++;
+                tmp -= primeList[start++];
+            }else if(tmp < n){
+                tmp += primeList[++end];
+            }
+        }
+        return ans;
     }
 }
