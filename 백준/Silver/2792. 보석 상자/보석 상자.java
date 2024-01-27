@@ -23,8 +23,6 @@ public class Main {
 
         for (int i = 0; i < color; i++) {
             colors[i] = Integer.parseInt(br.readLine());
-            if(colorCnt.containsKey(colors[i])) colorCnt.put(colors[i], colorCnt.get(colors[i]) + 1);
-            else colorCnt.put(colors[i], 1);
         }
 
         Arrays.sort(colors);
@@ -33,7 +31,7 @@ public class Main {
         //보석의 색상 수와 학생수가 일치할 경우 분배할 필요 없음
         if(children != color) {
             int start = 1;
-            int end = ans;
+            int end = ans - 1;
             int mid;
             while(start <= end){
                 mid = (start + end) / 2;
