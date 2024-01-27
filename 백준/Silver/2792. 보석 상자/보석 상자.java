@@ -2,15 +2,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int children, color, ans;
     static int[] colors;
-    static HashMap<Integer, Integer> colorCnt = new HashMap<>();
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,10 +20,8 @@ public class Main {
 
         for (int i = 0; i < color; i++) {
             colors[i] = Integer.parseInt(br.readLine());
+            ans = Math.max(colors[i], ans);
         }
-
-        Arrays.sort(colors);
-        ans = colors[color - 1];
 
         //보석의 색상 수와 학생수가 일치할 경우 분배할 필요 없음
         if(children != color) {
@@ -64,5 +59,4 @@ public class Main {
         if(smallCnt + bigCnt <= children) return true;
         return false;
     }
-
 }
