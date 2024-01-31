@@ -1,44 +1,36 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static int N, M;
-    static int number[], result[];
+    static int n, m;
+    static int[] selected;
     static StringBuilder sb = new StringBuilder();
-
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        number = new int[N];
-        result = new int[M];
-
-        for (int i = 0; i < N; i++) {
-            number[i] = i + 1;
-        }
-
-        perm(0);
+        selected = new int[m];
+        dup_per(0);
         System.out.println(sb);
+
     }
 
-    static void perm(int cnt){
-        if(cnt == M){
-            for (int i = 0; i < M; i++) {
-                sb.append(result[i]).append(" ");
+    public static void dup_per(int cnt){
+        if(cnt == m){
+            for (int i = 0; i < m; i++) {
+                sb.append(selected[i]).append(" ");
             }
             sb.append("\n");
             return;
         }
-        for (int i = 0; i < N; i++) {
-            result[cnt] = number[i];
-            perm(cnt + 1);
+        for (int i = 1; i <= n; i++) {
+            selected[cnt] = i;
+            dup_per(cnt + 1);
         }
     }
+
 }
