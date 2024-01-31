@@ -10,6 +10,7 @@ public class Main {
     static int n, m;
     static int[] seleted;
     static boolean[] visited;
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -21,14 +22,15 @@ public class Main {
         visited = new boolean[n + 1];
 
         perm(0);
+        System.out.println(sb);
     }
 
     public static void perm(int cnt){
         if(cnt == m){
             for (int i = 0; i < m; i++) {
-                System.out.print(seleted[i] + " ");
+                sb.append(seleted[i]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
 
