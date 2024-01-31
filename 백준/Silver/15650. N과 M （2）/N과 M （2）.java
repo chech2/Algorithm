@@ -1,29 +1,40 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-	
-	static int N; 
-	static int M;
-	static int [] arr;
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		N = sc.nextInt();
-		M = sc.nextInt();
-		arr = new int [M];
-		combi(0, 1);	
-	}
-	
-	private static void combi(int cnt, int start) {
-		if(cnt == M) {
-			for (int i = 0; i < M; i++) {
-				System.out.print(arr[i] + " ");
-			}
-			System.out.println();
-			return;
-		}
-		for (int i = start; i <= N; i++) {
-			arr[cnt] = i;
-			combi(cnt + 1, i + 1);
-		}
-	}
+
+    static int n, m;
+    static int[] selected;
+    static boolean[] visited;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        selected = new int[m];
+        visited = new boolean[n + 1];
+
+        combi(1, 0);
+        System.out.println(sb);
+    }
+
+    public static void combi(int start, int cnt){
+        if(cnt == m){
+            for (int i = 0; i < m; i++) {
+                sb.append(selected[i]).append(" ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = start; i <= n; i++) {
+            selected[cnt] = i;
+            combi(i + 1, cnt + 1);
+        }
+    }
+
 }
