@@ -54,7 +54,9 @@ public class Main {
             if (select2 == c) {
                 flag = true;
                 return;
-            } else{
+            } 
+            else if(c < select2) end--;
+            else{
                 for (int i = 0; i < n - 1; i++) {
                     if(i == start || i == end) break;
                     if(c - select2 == number[i]) {
@@ -62,8 +64,7 @@ public class Main {
                         return;
                     }
                 }
-                if (select2 < c) start++;
-                else end --;
+                start++;
             }
         }
     }
