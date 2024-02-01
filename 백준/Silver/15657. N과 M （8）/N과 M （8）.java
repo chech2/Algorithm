@@ -4,49 +4,43 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N, M;
-    static int result[], number[];
+
+    static int n, m;
+    static int[] number, selected;
     static StringBuilder sb = new StringBuilder();
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        result = new int[M];
-        number = new int[N];
+        number = new int[n];
+        selected = new int[m];
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             number[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(number);
-        perm(0);
+
+        combi(0, 0);
         System.out.println(sb);
     }
 
-    static void perm(int cnt){
-        if(cnt == M){
-            for (int i = 0; i < M; i++) {
-                sb.append(result[i]).append(" ");
+    public static void combi(int start, int cnt){
+        if(cnt == m){
+            for (int i = 0; i < m; i++) {
+                sb.append(selected[i]).append(" ");
             }
             sb.append("\n");
             return;
         }
-        for (int i = 0; i < N; i++) {
-            if(cnt == 0){
-                result[cnt] = number[i];
-            }else{
-                for (int j = i; j < N; j++) {
-                    if(result[cnt - 1] <= number[j]){
-                        result[cnt] = number[j];
-                        i = j;
-                        break;
-                    }
-                }
-            }
-            perm(cnt + 1);
+
+        for (int i = start; i < n; i++) {
+            selected[cnt] = number[i];
+            combi(i, cnt + 1);
         }
     }
+
 }
