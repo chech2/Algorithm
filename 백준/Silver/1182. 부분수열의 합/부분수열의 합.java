@@ -20,19 +20,17 @@ public class Main {
             number[i] = Integer.parseInt(st.nextToken());
         }
 
-        subset(1, number[0]);
-        subset(1, 0);
+        ans = subset(1, number[0]) + subset(1, 0);
 
         if(s == 0) ans--;
         System.out.println(ans);
     }
-    public static void subset(int cnt, int num){
+    public static int subset(int cnt, int num){
         if(cnt == n){
-            if(s == num) ans++;
-            return;
+            if(s == num) return 1;
+            return 0;
         }
 
-        subset(cnt + 1, num + number[cnt]);
-        subset(cnt + 1, num);
+        return subset(cnt + 1, num + number[cnt]) + subset(cnt + 1, num);
     }
 }
