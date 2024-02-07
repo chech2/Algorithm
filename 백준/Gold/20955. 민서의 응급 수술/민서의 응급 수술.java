@@ -36,7 +36,7 @@ public class Main {
         for (int i = 1; i < n + 1; i++){
             if(parent[i] < 0) ans++;
         }
-        System.out.println(ans - 1);
+        System.out.println(--ans);
     }
 
     public static boolean union(int x, int y){
@@ -44,8 +44,8 @@ public class Main {
         y = find(y);
 
         if(x == y) return false;
-        else if(x < y) parent[y] = x;
-        else parent[x] = y;
+        
+        parent[y] = x;
         return true;
     }
 
