@@ -1,108 +1,77 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.*;
 
 public class Main {
-    static int N, result;
-
-    //입력되는 재료 배열
-    static int[][] ingredients;
-    static boolean[] visited;
-
-    //최소 영양분 조건: 단, 지, 탄, 비
-    static int[] nutrients = new int[4];
-    static ArrayList <String> list = new ArrayList<>();
-
+    static int n, minPrice;
+    static int[] limit, selected, isPossible;
+    static int[][] list;
+    static ArrayList<String> selectStr = new ArrayList<>();
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        ingredients = new int[N][5];
-        visited = new boolean[N];
-        result = Integer.MAX_VALUE;
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        n = Integer.parseInt(br.readLine());
+        limit = new int[4];
+        selected = new int[n];
+        list = new int[n][5];
+        isPossible = new int[4];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < 4; i++) {
-            nutrients[i] = Integer.parseInt(st.nextToken());
-        }
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < 4; i++) {
+            limit[i] = Integer.parseInt(st.nextToken());
+        }
+        String str = "";
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < 5; j++) {
-                ingredients[i][j] = Integer.parseInt(st.nextToken());
+                list[i][j] = Integer.parseInt(st.nextToken());
+                if(j == 4) minPrice += list[i][4];
+                else isPossible[j] += list[i][j];
+            }
+            str += (i + 1 + " ");
+        }
+
+        for (int i = 0; i < 4; i++) {
+            if(isPossible[i] < limit[i]){
+                System.out.println(-1);
+                System.exit(0);
             }
         }
 
-        subset(0);
+        selectStr.add(str);
+        set(0, 0, 0, 0, 0, 0, 0);
+        Collections.sort(selectStr);
 
-        if(result == Integer.MAX_VALUE) System.out.println(-1);
-        else{
-            //Todo 사전 순의 값이 출력되어야 함
-            System.out.println(result);
-            Collections.sort(list);
-            System.out.println(list.get(0));
-
-        }
-
+        bw.append(minPrice + "\n");
+        bw.append(selectStr.get(0));
+        bw.flush();
+        bw.close();
     }
+    public static void set(int selectCnt, int gidx,int price, int g1, int g2, int g3, int g4){
+        if(limit[0] <= g1 && limit[1] <= g2 && limit[2] <= g3 && limit[3] <= g4 && price <= minPrice){
+            String str = "";
 
-    public static void subset(int cnt){
-
-        //부분집합 생성완료
-        if(N == cnt){
-            minimumPrice();
+            if(price < minPrice) selectStr.clear();
+             for (int i = 0; i < selectCnt; i++) {
+                str += ((selected[i] + 1) + " ");
+             }
+            selectStr.add(str);
+            minPrice = price;
             return;
         }
-        visited[cnt] = false;
-        subset(cnt + 1);
-        visited[cnt] = true;
-        subset(cnt + 1);
+        if(n <= gidx) return;
 
 
+        //선택한 경우
+        selected[selectCnt] = gidx;
+        set(selectCnt + 1, gidx + 1, price + list[gidx][4], g1 + list[gidx][0], g2 + list[gidx][1], g3 + list[gidx][2], g4 + list[gidx][3]);
+
+        //선택 안한 경우
+        selected[selectCnt] = 16;
+        set(selectCnt, gidx + 1, price, g1, g2, g3, g4);
     }
-
-    //단지탄비
-    public static void minimumPrice(){
-        int protein = 0;
-        int carbohydrate = 0;
-        int fat = 0;
-        int vitamin = 0;
-        int price = 0;
-
-        for (int i = 0; i < N; i++) {
-
-            //현재 선택된 경우
-            if(visited[i]){
-                protein += ingredients[i][0];
-                fat += ingredients[i][1];
-                carbohydrate += ingredients[i][2];
-                vitamin += ingredients[i][3];
-                price += ingredients[i][4];
-
-            }
-        }
-        if(protein >= nutrients[0] && fat >= nutrients[1] && carbohydrate >= nutrients[2] && vitamin >= nutrients[3])
-            if(price < result) {
-                result = price;
-                list.clear();
-                String str = "";
-                for (int i = 0; i < N; i++) {
-                    //현재 선택된 경우
-                    if (visited[i]) {
-                        str += (i + 1) + " ";
-                    }
-                }
-                list.add(str);
-            }
-            else if(price == result){
-                String str = "";
-                for (int i = 0; i < N; i++) {
-                    //현재 선택된 경우
-                    if (visited[i]) {
-                        str += (i + 1) + " ";
-                    }
-                }
-                list.add(str);
-            }
-        }
-
-    }
+}
