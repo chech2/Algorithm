@@ -1,51 +1,40 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	static int N;
-	static int[][] flavor;
-	static boolean [] boolflavor; //신맛
-	static int min = 1000000000; 
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		N = Integer.parseInt(st.nextToken());
-		//신맛 [][0], 쓴맛 [][1]에 저장
-		flavor = new int[N][2];
-		boolflavor = new boolean [N];
+    static int n;
+    static int[][] list;
+    static long ans;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine());
-			flavor[i][0] = Integer.parseInt(st.nextToken());
-			flavor[i][1] = Integer.parseInt(st.nextToken());
-		}
-		
-		sum (0);
-		System.out.println(min);
-	}
+        n = Integer.parseInt(br.readLine());
+        list = new int[n][2];
+        ans = Long.MAX_VALUE;
 
-	//공집합은 포함하지 않으므로 cnt는 1이상
-	//재로 1개가 어차피 2개의 맛을 가지므로 구분 x
-	private static void sum (int cnt) { // 0은 신맛, 1은 쓴맛
-		if(cnt == N) {
-			int sumsour = 1, sumbitter = 0, selectcnt = 0;
-			for (int i = 0; i <N; i++) {
-				if(boolflavor[i]) {
-					selectcnt++;
-					sumsour *= flavor[i][0];
-					sumbitter += flavor[i][1];
-				}
-			}
-			if(0 < selectcnt) 
-				min = Math.min(Math.abs(sumsour - sumbitter), min);
-			return;
-		}
-		boolflavor[cnt] = true;
-		sum(cnt + 1);
-		boolflavor[cnt] = false;
-		sum(cnt + 1);
-	}
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            list[i][0] = Integer.parseInt(st.nextToken());
+            list[i][1] = Integer.parseInt(st.nextToken());
+        }
+
+        combi(0, 1, 0);
+
+
+        System.out.println(ans);
+    }
+
+    public static void combi (int cnt, long s, long b){
+        if(cnt == n){
+            if(b != 0) ans = Math.min(ans, Math.abs(s - b));
+            return;
+        }
+        combi(cnt + 1, s * list[cnt][0], b + list[cnt][1]);
+        combi(cnt + 1, s, b);
+    }
 }
