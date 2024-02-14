@@ -1,40 +1,61 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int[][] house, memo;
 
+    static int n;
+    static int[][] house, dp;
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        N = Integer.parseInt(br.readLine());
-
-        //빨,초,파
-        house = new int[N + 1][3];
-        memo = new int[N + 1][3];
-
-        for (int i = 1; i < N + 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            house[i][0] = Integer.parseInt(st.nextToken());
-            house[i][1] = Integer.parseInt(st.nextToken());
-            house[i][2] = Integer.parseInt(st.nextToken());
-
-            dp(i);
+        n = Integer.parseInt(br.readLine());
+        dp = new int[n][3];
+        house = new int[n][3];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], -1);
         }
-        System.out.println(Math.min(Math.min(memo[N][0], memo[N][1]), memo[N][2]));
 
+        StringTokenizer st;
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < 3; j++) {
+                house[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        recur(0,  -1);
+        System.out.println(Math.min(dp[0][0], Math.min(dp[0][1], dp[0][2])));
     }
 
-    /*
-        현재 색상을 선택하고, 해당 색상 선택했을 것 별로 이전 최솟값이랑 해서 더하기
-    */
+    public static int recur(int cnt, int pre){
+        if(cnt == n) return 0;
+        int ret = isSave(cnt, pre);
+        if(ret != -1) return ret;
 
-    public static void dp(int now){
-        memo[now][0] = Math.min(memo[now - 1][1], memo[now - 1][2]) + house[now][0];
-        memo[now][1] = Math.min(memo[now - 1][0], memo[now - 1][2]) + house[now][1];
-        memo[now][2] = Math.min(memo[now - 1][0], memo[now - 1][1]) + house[now][2];
+        ret = 100000000;
+        for (int i = 0; i < 3; i++) {
+            if(i == pre) continue;
+            dp[cnt][i] = recur(cnt + 1, i) + house[cnt][i];
+            ret = Math.min(ret, dp[cnt][i]);
+        }
+        return ret;
     }
 
+    public static int isSave(int cnt, int pre){
+        if(pre == 0){
+            if(dp[cnt][1] != -1 && dp[cnt][2] != -1) {
+                return Math.min(dp[cnt][1], dp[cnt][2]);
+            }
+        }else if(pre == 1){
+            if(dp[cnt][0] != -1 && dp[cnt][2] != -1) {
+                return Math.min(dp[cnt][0], dp[cnt][2]);
+            }
+
+        }else if(pre == 2){
+            if(dp[cnt][0] != -1 && dp[cnt][1] != -1) {
+                return Math.min(dp[cnt][0], dp[cnt][1]);
+            }
+        }
+        return -1;
+    }
 }
