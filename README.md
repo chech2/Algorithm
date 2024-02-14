@@ -207,6 +207,10 @@
 |9489. 사촌|[링크](./%EB%B0%B1%EC%A4%80/Gold/9489.%E2%80%85%EC%82%AC%EC%B4%8C/README.md)|
 |9663. N－Queen|[링크](./%EB%B0%B1%EC%A4%80/Gold/9663.%E2%80%85N%EF%BC%8DQueen/README.md)|
 |9935. 문자열 폭발|[링크](./%EB%B0%B1%EC%A4%80/Gold/9935.%E2%80%85%EB%AC%B8%EC%9E%90%EC%97%B4%E2%80%85%ED%8F%AD%EB%B0%9C/README.md)|
+### 🚀 Gold II
+| 문제번호 | 링크 |
+| ----- | ----- |
+|21276. 계보 복원가 호석|[링크](./%EB%B0%B1%EC%A4%80/Gold%20II/21276.%E2%80%85%EA%B3%84%EB%B3%B4%E2%80%85%EB%B3%B5%EC%9B%90%EA%B0%80%E2%80%85%ED%98%B8%EC%84%9D/README.md)|
 ### 🚀 Gold III
 | 문제번호 | 링크 |
 | ----- | ----- |
