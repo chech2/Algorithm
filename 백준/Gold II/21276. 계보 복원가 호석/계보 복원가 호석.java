@@ -4,7 +4,6 @@ public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
     static int n, m, ans;
-
     static int[] d;
     static String[] name;
     static HashMap<String, Integer> map = new HashMap<>();
@@ -54,7 +53,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             size = result[i].size();
             sb.append(name[i]).append(" ").append(size).append(" ");
-            Collections.sort(list[i]);
+            Collections.sort(result[i]);
             for (int j = 0; j < size; j++) {
                 sb.append(name[result[i].get(j)]).append(" ");
             }
