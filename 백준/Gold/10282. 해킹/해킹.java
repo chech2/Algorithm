@@ -38,12 +38,8 @@ public class Main {
                 if(dist[now.n] + tmp.s < dist[tmp.n]){
                     dist[tmp.n] = dist[now.n] + tmp.s;
                     q.add(tmp);
-                    if(next == null || next.s < tmp.s) {
-                        next = tmp;
-                    }
                 }
             }
-            if(next != null) q.add(next);
         }
         int tatalc = 0;
         int totals = 0;
