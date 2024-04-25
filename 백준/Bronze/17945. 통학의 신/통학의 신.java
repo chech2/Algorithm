@@ -1,22 +1,24 @@
-import java.util.Scanner;
-
+import java.util.*;
+import java.io.*;
 public class Main {
 
-    static int A, B;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        A = sc.nextInt() * 2;
-        B = sc.nextInt();
-  
-        double tmp1 = Math.pow(A, 2) - 4 * B;
-        int tmp2 = (int)(-A + Math.sqrt(tmp1)) / 2;
-        int tmp3 = (int)(-A - Math.sqrt(tmp1)) / 2;
-        if (tmp2 == tmp3) {
-            System.out.println(tmp2);
-        } else {
-            System.out.println(Math.min(tmp2, tmp3) + " " + Math.max(tmp2, tmp3));
-        }
+    static int a, b;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws Exception{
+        st = new StringTokenizer(br.readLine());
+        a = Integer.parseInt(st.nextToken());
+        b = Integer.parseInt(st.nextToken());
 
+        for (int i = -1000; i < 10001; i++) {
+            if(findAns(i)) sb.append(i).append(" ");
+        }
+        System.out.println(sb);
     }
 
+    public static boolean findAns(int x){
+        if(x * x + 2 * a * x + b == 0) return true;
+        return false;
+    }
 }
