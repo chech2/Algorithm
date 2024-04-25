@@ -20,7 +20,7 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         w = Integer.parseInt(st.nextToken());
 
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < n / 2 + 1; i++) {
             if(a * i + b * (n - i) == w) {
                 if(sheep != 0){
                     sheep = 0;
@@ -28,6 +28,15 @@ public class Main {
                 }else{
                     sheep = i;
                     goat = n - i;
+                }
+            }
+            if((b * i + a * (n - i) == w) && i != (n - i)){
+                if(sheep != 0){
+                    sheep = 0;
+                    break;
+                }else{
+                    sheep = n - i;
+                    goat = i;
                 }
             }
         }
