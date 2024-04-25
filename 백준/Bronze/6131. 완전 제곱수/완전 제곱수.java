@@ -1,19 +1,18 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
+    static int n, cnt;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws Exception{
+        n = Integer.parseInt(br.readLine());
 
-    static int N, result;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-
-        // i = b, j = a
-        for (int i = 1; i <= 499; i++) {
-            for (int j = i; j <= 499 ; j++) {
-                if(i * i + N == j * j) result++;
+        for (int i = 1; i < 501; i++) {
+            for (int j = i; j < 501; j++) {
+                if(i * i + n == j * j) cnt++;
             }
         }
-        System.out.println(result);
+        System.out.println(cnt);
     }
 
 }
