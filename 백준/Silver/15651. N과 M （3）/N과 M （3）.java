@@ -9,24 +9,26 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     static StringTokenizer st;
     public static void main(String[] args) throws Exception{
+        input();
+        perm(0);
+        System.out.println(sb);
+    }
+
+    public static void input() throws Exception{
         st = new StringTokenizer(br.readLine());
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        selected  = new char[2 * m - 1];
-        for (int i = 1; i < 2 * m - 1; i += 2) {
-            selected[i] = ' ';
-        }
+        selected = new char[2 * m];
+        selected[2 * m - 1] = '\n';
 
-        perm(0);
-        System.out.println(sb);
+        for (int i = 1; i < 2 * m - 1; i += 2) selected[i] = ' ';
     }
 
     public static void perm(int cnt) throws Exception{
         if(cnt == m){
             sb.append(selected);
-            sb.append('\n');
             return;
         }
 
