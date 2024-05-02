@@ -14,7 +14,10 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        selected  = new char[m];
+        selected  = new char[2 * m - 1];
+        for (int i = 1; i < 2 * m - 1; i += 2) {
+            selected[i] = ' ';
+        }
 
         perm(0);
         System.out.println(sb);
@@ -22,15 +25,13 @@ public class Main {
 
     public static void perm(int cnt) throws Exception{
         if(cnt == m){
-            for (int i = 0; i < m; i++) {
-                sb.append(selected[i]).append(' ');
-            }
+            sb.append(selected);
             sb.append('\n');
             return;
         }
 
         for (int i = 1; i < n + 1; i++) {
-            selected[cnt] = number[i - 1];
+            selected[2 * cnt] = number[i - 1];
             perm(cnt + 1);
         }
     }
