@@ -42,13 +42,13 @@ public class Main {
 
         for (int i = 0; i < 10; i++) {
             if(visited[i]) continue;
-
-            selected[cnt] = number[i];
             if(cnt != 0) {
-                if (operation[cnt - 1] == '<' && selected[cnt - 1] > selected[cnt]) continue;
-                else if (operation[cnt - 1] == '>' && selected[cnt - 1] < selected[cnt]) continue;
+                if (operation[cnt - 1] == '<' && selected[cnt - 1] > number[i]) continue;
+                else if (operation[cnt - 1] == '>' && selected[cnt - 1] < number[i]) continue;
             }
+
             visited[i] = true;
+            selected[cnt] = number[i];
             perm(cnt + 1, num * 10 + selected[cnt]);
             visited[i] = false;
         }
