@@ -1,68 +1,69 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-
+import java.util.*;
+import java.io.*;
 public class Main {
-
     static int n;
-    static long maxValue, minValue;
-    static char[] sign;
-    static int[] selected;
-    static boolean[] visited;
-    static HashMap<Long, String> map = new HashMap<>();
+    static long minVal, maxVal;
+    static char[] operation;
+    static boolean[] visited = new boolean[10];
+    static int[] selected, minArr, maxArr;
+    static int[] number = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-        n = Integer.parseInt(br.readLine());
-        sign = new char[n];
-        selected = new int[n + 1];
-        visited = new boolean[10];
-        maxValue = -1;
-        minValue = 10000000000L;
-        st = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < n; i++) {
-            sign[i] = st.nextToken().charAt(0);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            visited[i] = true;
-            selected[0] = i;
-            selectNumber(1, i, String.valueOf(i));
-            visited[i] = false;
-        }
-        System.out.println(map.get(maxValue));
-        System.out.println(map.get(minValue));
-
-
+        input();
+        perm(0, 0);
+        print();
     }
-    public static void selectNumber(int cnt, long num, String number){
+
+    public static void print(){
+        StringBuilder minSB = new StringBuilder();
+        StringBuilder maxSB = new StringBuilder();
+
+        for (int i = 0; i < n + 1; i++) {
+            minSB.append(minArr[i]);
+            maxSB.append(maxArr[i]);
+        }
+        System.out.println(maxSB);
+        System.out.println(minSB);
+    }
+
+    public static void perm(int cnt, long num){
         if(cnt == n + 1){
-            map.put(num, number);
-            maxValue = Math.max(maxValue, num);
-            minValue = Math.min(minValue, num);
+            if(num < minVal) {
+                minArr = selected.clone();
+                minVal = num;
+            }
+            if(maxVal < num) {
+                maxArr = selected.clone();
+                maxVal = num;
+            }
             return;
         }
 
-        if (sign[cnt - 1] == '<') {
-            for (int i = selected[cnt - 1]; i < 10; i++) {
-                if(visited[i]) continue;
-                visited[i] = true;
-                selected[cnt] = i;
-                selectNumber(cnt + 1, num * 10 + i, number + i);
-                visited[i] = false;
-            }
-        }else{
-            for (int i = 0; i < selected[cnt - 1]; i++) {
-                if(visited[i]) continue;
-                visited[i] = true;
-                selected[cnt] = i;
-                selectNumber(cnt + 1, num * 10 + i, number + i);
-                visited[i] = false;
-            }
-        }
+        for (int i = 0; i < 10; i++) {
+            if(visited[i]) continue;
 
+            selected[cnt] = number[i];
+            if(cnt != 0) {
+                if (operation[cnt - 1] == '<' && selected[cnt - 1] > selected[cnt]) continue;
+                else if (operation[cnt - 1] == '>' && selected[cnt - 1] < selected[cnt]) continue;
+            }
+            visited[i] = true;
+            perm(cnt + 1, num * 10 + selected[cnt]);
+            visited[i] = false;
+        }
+    }
+
+    public static void input() throws Exception{
+        n = Integer.parseInt(br.readLine());
+        operation = new char[n];
+        selected = new int[n + 1];
+        minVal = Long.MAX_VALUE;
+        maxVal = Long.MIN_VALUE;
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            operation[i] = st.nextToken().charAt(0);
+        }
     }
 }
