@@ -1,52 +1,42 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.sql.SQLOutput;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
+import java.util.*;
+import java.io.*;
 public class Main {
-    static int N, ans;
-    static int[] number, result;
-    static boolean[] visit;
+
+    static int n, maxVal;
+    static boolean[] visited;
+    static int[] numbers;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = null;
-        N = Integer.parseInt(br.readLine());
-        ans = Integer.MIN_VALUE;
-        number = new int[N];
-        result = new int[N];
-        visit = new boolean[N];
-
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            number[i] = Integer.parseInt(st.nextToken());
-        }
-
-        perm(0);
-        System.out.println(ans);
+        input();
+        perm(0, 0, 0);
+        System.out.println(maxVal);
     }
 
-    static void perm(int cnt){
-        if(cnt == N){
-//            cal();
-            ans = Math.max(cal(), ans);
-//            System.out.println(Arrays.toString(result));
+    public static void perm(int cnt, int pre, int sum){
+        if(cnt == n){
+            maxVal = Math.max(maxVal, sum);
             return;
         }
-        for (int i = 0; i < N; i++) {
-            if(visit[i]) continue;
-            result[cnt] = number[i];
-            visit[i] = true;
-            perm(cnt + 1);
-            visit[i] = false;
+
+        for (int i = 0; i < n; i++) {
+            if(visited[i]) continue;
+
+            visited[i] = true;
+            if(cnt != 0) perm(cnt + 1, numbers[i],sum + Math.abs(pre - numbers[i]));
+            else perm(cnt + 1, numbers[i], sum);
+            visited[i] = false;
         }
     }
-    static int cal(){
-        int calresult = 0;
-        for (int i = 0; i < N - 1; i++) {
-            calresult += Math.abs(result[i] - result[i + 1]);
-        }
-        return calresult;
 
+    public static void input() throws Exception{
+        n = Integer.parseInt(br.readLine());
+        visited = new boolean[n];
+        numbers = new int[n];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            numbers[i] = Integer.parseInt(st.nextToken());
+        }
     }
 }
