@@ -12,32 +12,20 @@ public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
         input();
-        subset(0, 0, 0);
+        subset(0, 0, 0, 0, 1000000000);
         System.out.println(ans);
     }
 
-    public static void subset(int cnt, int select, long num){
+    public static void subset(int cnt, int select, long num, int maxVal, int minVal){
         if(cnt == n){
-            if(2 <= select){
-                if(l <= num && num <= r){
-                        int minVal = 2000000000;
-                        int maxVal = -1;
+            if(2 <= select && l <= num && num <= r && x <= maxVal - minVal) ans++;
 
-                    for (int i = 0; i < n; i++) {
-                        if(visited[i]){
-                            minVal = Math.min(minVal, number[i]);
-                            maxVal = Math.max(maxVal, number[i]);
-                        }
-                    }
-                    if(x <= maxVal - minVal) ans++;
-                }
-            }
             return;
         }
         visited[cnt] = true;
-        subset(cnt + 1, select + 1, num + number[cnt]);
+        subset(cnt + 1, select + 1, num + number[cnt], Math.max(maxVal, number[cnt]), Math.min(minVal, number[cnt]));
         visited[cnt] = false;
-        subset(cnt + 1, select, num);
+        subset(cnt + 1, select, num, maxVal, minVal);
     }
 
     public static void input() throws Exception{
