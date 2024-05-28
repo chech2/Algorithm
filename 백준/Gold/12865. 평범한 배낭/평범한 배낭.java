@@ -1,43 +1,44 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
+import java.util.*;
+import java.io.*;
 public class Main {
-
-    static int MaxWeight, ItemNum, MaxValue;
-    static int memo[][];
-
+    static int n, k;
+    static int[] w, v;
+    static int[][] dp;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        ItemNum = Integer.parseInt(st.nextToken());
-        MaxWeight = Integer.parseInt(st.nextToken());
-
-        MaxValue = Integer.MIN_VALUE;
-        memo = new int[ItemNum + 1][MaxWeight + 1];
-
-        int W = 0;
-        int V = 0;
-
-        for (int i = 1; i < ItemNum + 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            //무게
-            W =  Integer.parseInt(st.nextToken());
-            //가치
-            V =  Integer.parseInt(st.nextToken());
-            for (int j = 1; j < MaxWeight + 1; j++) {
-                //현재 물건이 무거워서 담지 못하는 경우
-                if(W > j){
-                    memo[i][j] = memo[i - 1][j];
-                }else{
-                    memo[i][j] = Math.max(memo[i - 1][j - W] + V, memo[i - 1][j]);
-                }
-            }
-        }
-        System.out.println(memo[ItemNum][MaxWeight]);
+        input();
+        test();
+        System.out.println(dp[n][k]);
     }
 
+    public static void test(){
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 0; j < k + 1; j++) {
+                // 무게 한도별 최대 가치 저장
+                dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
+
+                // 이번 물건을 선택했을 때, 최대 무게를 초과하지 않을 경우 업데이트
+                if(j + w[i] <= k) dp[i][j + w[i]] = Math.max(dp[i - 1][j + w[i]], dp[i - 1][j] + v[i]);
+            }
+        }
+    }
+
+    public static void input() throws Exception{
+        st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        w = new int[n + 1];
+        v = new int[n + 1];
+        dp = new int[n + 1][k + 1];
+
+
+        for (int i = 1; i < n + 1; i++) {
+            st = new StringTokenizer(br.readLine());
+            w[i] = Integer.parseInt(st.nextToken());
+            v[i] = Integer.parseInt(st.nextToken());
+        }
+    }
 
 }
