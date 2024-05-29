@@ -1,42 +1,36 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-
-//n개의 누적합을 모두 구해보자
 public class Main {
+    static int n, m;
+    static int[] s;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static void main(String[] args) throws Exception{
+        st = new StringTokenizer(br.readLine());
 
-	static int N;
-	static int M;
-	static int[] arr;
-	static int[] sumlist;
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		StringBuilder sb = new StringBuilder();
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        s = new int[n + 1];
 
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		arr = new int[N];
-		sumlist = new int[N];
-		
-		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < N; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-			if(i == 0)
-				sumlist[0] = arr[i];
-			else
-				sumlist[i] = sumlist[i - 1] + arr[i];
-		}
-		int j;
-		int k;		
-		for (int i = 0; i < M; i++) {
-			st = new StringTokenizer(br.readLine());
-			j = Integer.parseInt(st.nextToken()) - 1;
-			k = Integer.parseInt(st.nextToken()) - 1;
-			sb.append(sumlist[k] - sumlist[j] + arr[j] + "\n");
-		}
-		System.out.println(sb);
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            s[i + 1] = Integer.parseInt(st.nextToken()) + s[i];
+        }
 
-	}
+        int start, end;
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            start = Integer.parseInt(st.nextToken());
+            end = Integer.parseInt(st.nextToken());
+            bw.append(s[end] - s[start - 1] + "\n");
+        }
+        bw.flush();
+        bw.close();
+    }
 }
