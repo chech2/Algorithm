@@ -8,7 +8,8 @@ public class Main {
     static int n, m;
     static int[] s;
     static StringTokenizer st;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder()
+;    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
         st = new StringTokenizer(br.readLine());
@@ -28,8 +29,10 @@ public class Main {
 
             start = Integer.parseInt(st.nextToken());
             end = Integer.parseInt(st.nextToken());
-            bw.append(s[end] - s[start - 1] + "\n");
+            sb.append(s[end] - s[start - 1]);
+            sb.append("\n");
         }
+        bw.append(sb);
         bw.flush();
         bw.close();
     }
