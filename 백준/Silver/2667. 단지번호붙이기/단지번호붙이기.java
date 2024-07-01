@@ -1,66 +1,75 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-//map바껴도 상관 없음
+import java.io.*;
+import java.util.*;
 public class Main {
+    static int n, ans;
     static int[][] map;
-
-    //상, 하, 좌, 우
-    static int[] dx = {-1,1,0,0};
-    static int[] dy = {0,0,-1,1};
-    static int N, group;
+    //상, 우, 하, 좌
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static int[] result;
+    static StringBuilder sb = new StringBuilder();
     static PriorityQueue<Integer> q = new PriorityQueue<>();
-    static boolean[][] visited;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        map = new int[N][N];
-        visited = new boolean[N][N];
-        group = 2;
+        input();
 
-        for (int i = 0; i < N; i++) {
-            String str[] = br.readLine().split("");
-            for (int j = 0; j < N; j++) {
-                map[i][j] = Integer.parseInt(str[j]);
-            }
-        }
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if(!visited[i][j] && map[i][j] == 1){
-                    dfs(i, j);
-                    group++;
+        int cnt;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if(map[i][j] == 1) {
+                    cnt = 0;
+                    map[i][j] = ans;
+                    dfs(i, j, cnt);
+                    ans++;
                 }
             }
         }
+        count();
+        System.out.println(sb);
+    }
 
-        int []ans = new int[group];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (map[i][j] != 0) ans[map[i][j]]++;
+    public static void count(){
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if(map[i][j] != 0) result[map[i][j]]++;
             }
         }
 
-        System.out.println(group - 2);
-        Arrays.sort(ans);
-        for (int i = 2; i < group; i++) {
-            System.out.println(ans[i]);
+        for (int i = 0; i < result.length; i++) if(result[i] != 0) q.add(result[i]);
+
+        sb.append(q.size()).append("\n");
+        while(!q.isEmpty()){
+            sb.append(q.poll()).append("\n");
         }
     }
-    static void dfs(int x, int y){
-        map[x][y] = group;
-        visited[x][y] = true;
+    public static void dfs(int x, int y, int cnt){
+        int r, c;
 
         for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+            r = x + dx[i];
+            c = y + dy[i];
 
-            if(nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
-            if(visited[nx][ny]) continue;
-            if(map[nx][ny] != 1) continue;
-            dfs(nx, ny);
+            if(r < 0 || n <= r || c < 0 || n <= c) continue;
+            if(map[r][c] != 1) continue;
+
+            map[r][c] = ans;
+            dfs(r, c, cnt + 1);
         }
-        visited[x][y] = false;
     }
+
+    public static void input() throws Exception{
+        n = Integer.parseInt(br.readLine());
+        map = new int[n][n];
+        result = new int[n * (n + 1) / 2];
+        ans = 2;
+
+        String[] str;
+        for (int i = 0; i < n; i++) {
+            str = br.readLine().split("");
+            for (int j = 0; j < n; j++) {
+                map[i][j] = Integer.parseInt(str[j]);
+            }
+        }
+    }
+
 }
