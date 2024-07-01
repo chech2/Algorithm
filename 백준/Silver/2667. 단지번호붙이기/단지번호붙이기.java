@@ -13,22 +13,29 @@ public class Main {
     public static void main(String[] args) throws Exception {
         input();
 
-        int cnt;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
+
                 if(map[i][j] == 1) {
-                    cnt = 0;
                     map[i][j] = ans;
-                    dfs(i, j, cnt);
+                    dfs(i, j);
                     ans++;
                 }
             }
         }
+
         count();
         System.out.println(sb);
     }
 
     public static void count(){
+
+        if(ans == 2) {
+            sb.append(0);
+            return;
+        }
+
+        result = new int[ans + 1];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if(map[i][j] != 0) result[map[i][j]]++;
@@ -42,7 +49,8 @@ public class Main {
             sb.append(q.poll()).append("\n");
         }
     }
-    public static void dfs(int x, int y, int cnt){
+    
+    public static void dfs(int x, int y){
         int r, c;
 
         for (int i = 0; i < 4; i++) {
@@ -53,14 +61,13 @@ public class Main {
             if(map[r][c] != 1) continue;
 
             map[r][c] = ans;
-            dfs(r, c, cnt + 1);
+            dfs(r, c);
         }
     }
 
     public static void input() throws Exception{
         n = Integer.parseInt(br.readLine());
         map = new int[n][n];
-        result = new int[n * (n + 1) / 2];
         ans = 2;
 
         String[] str;
@@ -71,5 +78,4 @@ public class Main {
             }
         }
     }
-
 }
