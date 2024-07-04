@@ -29,9 +29,10 @@ public class Main {
             else sb.append(d[i]);
             sb.append("\n");
         }
-        bw.append(sb);
-        bw.flush();
-        bw.close();
+        System.out.println(sb);
+//        bw.append(sb);
+//        bw.flush();
+//        bw.close();
     }
 
     public static void dijkstra(){
