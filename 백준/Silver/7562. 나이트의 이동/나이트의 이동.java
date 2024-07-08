@@ -1,68 +1,83 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int TC, N, ans;
-    static int[][] posi;
-    static boolean visited[][];
-    static int dx[] = {-1, -2, -2, -1, 1, 2, 2, 1};
-    static int dy[] = {-2, -1, 1, 2, -2, -1, 1, 2};
+
+    static int t, n;
+    static node[] p;
+    static int[][] map;
+    static boolean[][] visited;
+    static int[] dx = {-2, -1, 1, 2, 2, 1, -1, -2};
+    static int[] dy = {1, 2, 2, 1, -1, -2, -2, -1};
+    static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        TC = Integer.parseInt(br.readLine());
+        t = Integer.parseInt(br.readLine());
 
-        for (int t = 0; t < TC; t++) {
-            N = Integer.parseInt(br.readLine());
-            visited = new boolean[N][N];
-            posi = new int[2][2];
-            for (int i = 0; i < 2; i++) {
-                st = new StringTokenizer(br.readLine());
-                posi[i][0] =  Integer.parseInt(st.nextToken());
-                posi[i][1] =  Integer.parseInt(st.nextToken());
-            }
-            ans = Integer.MAX_VALUE;
-
-            bfs();
+        for (int i = 0; i < t; i++) {
+            input();
+            if(!(p[0].x == p[1].x && p[0].y == p[1].y)) sb.append(bfs());
+            else sb.append(0);
+            sb.append("\n");
         }
+        System.out.println(sb);
     }
 
-    static void bfs(){ //posi[0][0], posi[0][1],
+    public static int bfs(){
         Queue<node> q = new ArrayDeque<>();
-        q.add(new node(posi[0][0], posi[0][1], 0));
+        q.add(p[0]);
+        visited[p[0].x][p[0].y] = true;
+        int ans = 0;
 
-        visited[posi[0][0]][posi[0][1]] = true;
+        node now;
+        int nx, ny, size;
+        while (!q.isEmpty()){
+            size = q.size();
 
-        while(!q.isEmpty()){
-            node now = q.poll();
-            int x = now.x;
-            int y = now.y;
-            if(x == posi[1][0] && y == posi[1][1]) {
-                System.out.println(now.time);
-                break;
+            for (int rot = 0; rot < size; rot++) {
+                now = q.poll();
+
+                if(now.x == p[1].x && now.y == p[1].y) return ans;
+
+                for (int i = 0; i < 8; i++) {
+                    nx = now.x + dx[i];
+                    ny = now.y + dy[i];
+
+                    if(nx < 0 || n <= nx || ny < 0 || n <= ny) continue;
+                    if(visited[nx][ny]) continue;
+                    visited[nx][ny] = true;
+                    q.add(new node(nx, ny));
+
+                }
             }
-            for (int i = 0; i < 8; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
+            ans++;
+        }
+        return -1;
+    }
 
-                if(nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
-                if(visited[nx][ny]) continue;
-                visited[nx][ny] = true;
-                q.add(new node(nx, ny, now.time + 1));
-            }
+    static void input() throws Exception{
+        n = Integer.parseInt(br.readLine());
+        map = new int[n][n];
+        visited = new boolean[n][n];
+        p = new node[2];
+
+        int x, y;
+        for (int i = 0; i < 2; i++) {
+            st = new StringTokenizer(br.readLine());
+            x = Integer.parseInt(st.nextToken());
+            y = Integer.parseInt(st.nextToken());
+
+            p[i] = new node(x, y);
         }
     }
 
     static class node{
-        int x, y, time;
-        node(int x, int y, int time){
+        int x, y;
+
+        node(int x, int y){
             this.x = x;
             this.y = y;
-            this.time = time;
         }
     }
-
 }
