@@ -4,51 +4,55 @@ import java.util.*;
 public class Main {
 
     static int n, m, k;
-    static int[] kList;
-    static boolean[] visited;
-    static PriorityQueue<Integer> result;
-    static PriorityQueue<node> q;
+    static int[] people;
+    static int[][] d;
     static ArrayList<node>[] graph;
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
         input();
-        bfs();
+        for (int i = 0; i < k + 1; i++) dijkstra(people[i], i);
         print();
-    }
-
-    public static void bfs(){
-        visited[1] = true;
-        q.add(new node(1, 0, 1));
-
-        node now, next;
-        while (!q.isEmpty()){
-            now = q.poll();
-
-            for (int i = 0; i < graph[now.n].size(); i++) {
-                next = graph[now.n].get(i);
-
-                if(visited[next.n]) continue;
-                if(now.white == 1) result.add(next.n);
-                visited[next.n] = true;
-
-                q.add(new node(next.n, now.t + next.t, now.white));
-            }
-        }
     }
 
     public static void print() throws Exception{
         StringBuilder sb = new StringBuilder();
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        if(result.isEmpty()) sb.append(0);
-        while (!result.isEmpty()) {
-            sb.append(result.poll()).append(" ");
+        int cnt;
+        for (int j = 2; j < n + 1; j++) {
+            cnt = 0;
+            for (int i = 0; i < k; i++) {
+                if(d[k][j] != -1 && d[k][j] < d[i][j]){
+                    cnt++;
+                }
+            }
+            if(cnt == k) sb.append(j).append(" ");
         }
-
+        if(sb.length() == 0) sb.append(0);
         bw.append(sb);
         bw.flush();
         bw.close();
+    }
+
+    public static void dijkstra(int number, int idx){
+        PriorityQueue<node> q = new PriorityQueue<>((o1, o2) -> o1.t - o2.t);
+        q.add(new node(number, 0));
+
+        d[idx][number] = 0;
+        node now, next;
+        while(!q.isEmpty()){
+            now = q.poll();
+
+            for (int i = 0; i < graph[now.n].size(); i++) {
+                next = graph[now.n].get(i);
+
+                if(d[idx][now.n] + next.t < d[idx][next.n]){
+                    d[idx][next.n] = d[idx][now.n] + next.t;
+                    q.add(next);
+                }
+            }
+        }
     }
 
     public static void input() throws Exception{
@@ -57,13 +61,11 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
-        kList = new int[k];
-        visited = new boolean[n + 1];
+        people = new int[k + 1];
+        d = new int[k + 1][n + 1]; // 추종자 + 백채원의 최단 경로 저장, d[k]는 백채원
 
         graph = new ArrayList[n + 1];
-        for (int i = 0; i < n + 1; i++) {
-            graph[i] = new ArrayList<>();
-        }
+        for (int i = 0; i < n + 1; i++) graph[i] = new ArrayList<>();
 
         int n1, n2, p;
         for (int i = 0; i < m; i++) {
@@ -73,32 +75,27 @@ public class Main {
             n2 = Integer.parseInt(st.nextToken());
             p = Integer.parseInt(st.nextToken());
 
-            graph[n1].add(new node(n2, p, -1));
-            graph[n2].add(new node(n1, p, -1));
+            graph[n1].add(new node(n2, p));
+            graph[n2].add(new node(n1, p));
         }
 
-        result = new PriorityQueue<>();
-        q = new PriorityQueue<>((o1, o2) -> {
-            if(o1.t == o2.t) return o1.white - o2.white;
-            return o1.t - o2.t;
-        });
-
+        Arrays.fill(d[k], 2100000000);
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < k; i++) {
-            kList[i] = Integer.parseInt(st.nextToken());
-            q.add(new node(kList[i], 0, 0));
-            visited[kList[i]] = true;
+            people[i] = Integer.parseInt(st.nextToken());
 
+            Arrays.fill(d[i], 2100000000);
+            d[k][people[i]] = -1;
         }
+        people[k] = 1;
     }
 
-    // 0: 추종자, 1: 백채원, -1: 초기값
+    // 0: 추종자, 1: 백채원
     static class node{
-        int n, t, white;
-        node(int n, int t, int white){
+        int n, t;
+        node(int n, int t){
             this.n = n;
             this.t = t;
-            this.white = white;
         }
     }
 }
