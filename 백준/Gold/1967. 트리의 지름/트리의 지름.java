@@ -1,72 +1,68 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n, MAXVALUE, idx;
-    static int[] size, parent;
-    static ArrayList<node>[] graph;
+
+    public static class node {
+        int v, p;
+        node(int v, int p){
+            this.v = v;
+            this.p = p;
+        }
+    }
+
+    static int n, ans, l;
+    static int[] d;
+    static List<node>[] graph;
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
         input();
-        finddiameter(1, 0);
+        dfs(1, 0, 0);
 
-        Arrays.fill(size, 0);
-        finddiameter(idx, 0);
 
-        System.out.println(MAXVALUE);
+        Arrays.fill(d, 0);
+        dfs(l, 0, 0);
+        System.out.println(ans);
+
     }
-    public static void finddiameter(int cur, int pre){
+
+    public static void dfs(int now, int pre, int price){
+
         node next;
+        for (int i = 0; i < graph[now].size(); i++) {
+            next = graph[now].get(i);
 
-        for (int i = 0; i < graph[cur].size(); i++) {
-            next = graph[cur].get(i);
-
-            if(next.n == pre) continue;
-            size[next.n] = size[cur] + next.w;
-            if(MAXVALUE < size[next.n]){
-                MAXVALUE = size[next.n];
-                idx = next.n;
+            if(next.v == pre) continue;
+            d[next.v] += d[now] + next.p;
+            if(ans < d[next.v]){
+                ans = d[next.v];
+                l = next.v;
             }
-            finddiameter(next.n, cur);
+            dfs(next.v, now, price + next.p);
         }
     }
 
     public static void input() throws Exception{
-        strToken();
-        n = Integer.parseInt(st.nextToken());
-        graph = new ArrayList[n + 1];
-        size = new int[n + 1];
-        parent = new int[n + 1];
+        n = Integer.parseInt(br.readLine());
+        d = new int[n + 1];
+        graph = new List[n + 1];
 
         for (int i = 0; i < n + 1; i++) {
             graph[i] = new ArrayList<>();
         }
 
-        int p, c, w;
+        int u, v, p;
         for (int i = 0; i < n - 1; i++) {
-            strToken();
+            st = new StringTokenizer(br.readLine());
+
+            u = Integer.parseInt(st.nextToken());
+            v = Integer.parseInt(st.nextToken());
             p = Integer.parseInt(st.nextToken());
-            c = Integer.parseInt(st.nextToken());
-            w = Integer.parseInt(st.nextToken());
 
-            parent[c] = p;
-            graph[p].add(new node(c, w));
-            graph[c].add(new node(p, w));
-        }
-    }
-    public static class node{
-        int n, w;
-        node(int n, int w){
-            this.n = n;
-            this.w = w;
+            graph[u].add(new node(v, p));
+            graph[v].add(new node(u, p));
         }
     }
 
-    public static void strToken() throws Exception{
-        st = new StringTokenizer(br.readLine());
-    }
 }
