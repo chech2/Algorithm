@@ -5,19 +5,21 @@ import java.util.PriorityQueue;
 
 public class Main {
     static int n;
-    static PriorityQueue<Integer> arr;
+    static int[] arr;
     static StringBuilder sb = new StringBuilder();
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
         n = Integer.parseInt(br.readLine());
-        arr = new PriorityQueue<>((o1, o2) -> o2 - o1);
+        arr = new int[n];
 
         for (int i = 0; i < n; i++) {
-            arr.add(Integer.parseInt(br.readLine()));
+            arr[i] = Integer.parseInt(br.readLine());
         }
 
-        for (int i = 0; i < n; i++) {
-            sb.append(arr.poll()).append("\n");
+        Arrays.sort(arr);
+
+        for (int i = n - 1; 0 <= i; i--) {
+            sb.append(arr[i]).append("\n");
         }
         System.out.println(sb);
     }
