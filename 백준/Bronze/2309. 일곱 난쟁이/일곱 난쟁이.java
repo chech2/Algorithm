@@ -1,43 +1,37 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.stream.Stream;
-
+import java.io.*;
+import java.util.*;
 public class Main {
 
-    static int[] arr;
-    static int sum;
+    static int[] people, selected;
+    static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        arr = new int[9];
-        for (int i = 0; i < 9; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-            sum += arr[i];
-        }
-        Arrays.sort(arr);
-
-        int start = 0;
-        int end = 8;
-        int now = 0;
-
-        while(sum - now != 100){
-            now = arr[start] + arr[end];
-            if(100 < sum - now){
-                start++;
-            }else if(sum - now < 100){
-                end--;
-            }
-        }
+        people = new int[9];
+        selected = new int[7];
 
         for (int i = 0; i < 9; i++) {
-            if(start == i || end == i) continue;
-            bw.append(arr[i] + "\n");
+            people[i] = Integer.parseInt(br.readLine());
         }
-        bw.flush();
-        bw.close();
+        Arrays.sort(people);
+        combi(0, 0, 0);
     }
+
+    public static void combi(int start, int cnt, int sum){
+        if(cnt == 7){
+            if(sum == 100){
+                for (int i = 0; i < 7; i++) {
+                    sb.append(selected[i]).append("\n");
+                }
+                System.out.println(sb);
+                System.exit(0);
+            }
+            return;
+        }
+        for (int i = start; i < 9; i++) {
+            selected[cnt] = people[i];
+            combi(i + 1, cnt + 1, sum + people[i]);
+        }
+    }
+
 }
