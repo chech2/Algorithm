@@ -1,30 +1,35 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        int max = 0;
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(st.nextToken());
-        int[] temperature = new int[N];
+    static int n, k;
+    static int[] s;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws Exception{
+        input();
+        System.out.println(mintemp());
+    }
+
+    public static int mintemp(){
+        int ans = -20000000;
+        for (int i = n; -1 < i - k; i--) {
+            ans = Math.max(ans, s[i] - s[i - k]);
+        }
+        return ans;
+    }
+
+    public static void input() throws Exception{
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            temperature[i] = Integer.parseInt(st.nextToken());
-        }
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        s = new int[n + 1];
 
-        for (int i = 0; i < K; i++) {
-            max = max + temperature[i];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 1; i < n + 1; i++){
+            s[i] = s[i - 1] + Integer.parseInt(st.nextToken());
         }
-        int temp = max;
-        for (int i = K; i < N; i++) {
-            temp = temp - temperature[i - K] + temperature[i];
-            max = Math.max(max, temp);
-        }
-
-        System.out.println(max);
     }
 }
