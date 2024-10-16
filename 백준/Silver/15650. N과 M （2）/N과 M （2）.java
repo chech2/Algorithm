@@ -1,40 +1,39 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
+
 
 public class Main {
 
     static int n, m;
-    static int[] selected;
-    static boolean[] visited;
+    static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        selected = new int[m];
-        visited = new boolean[n + 1];
-
-        combi(1, 0);
-        System.out.println(sb);
+        input();
+        recur(0, 1, 0);
+        bw.append(sb);
+        bw.flush();
+        bw.close();
     }
 
-    public static void combi(int start, int cnt){
+    static void recur(int cnt, int start, int target){
         if(cnt == m){
-            for (int i = 0; i < m; i++) {
-                sb.append(selected[i]).append(" ");
+            String[] results = String.valueOf(target).split("");
+            for (String result : results) {
+                sb.append(result).append(" ");
             }
             sb.append("\n");
             return;
         }
-
         for (int i = start; i <= n; i++) {
-            selected[cnt] = i;
-            combi(i + 1, cnt + 1);
+            recur(cnt + 1, i + 1, target * 10 + i);
         }
     }
+    static void input() throws Exception{
+        st = new StringTokenizer(br.readLine());
 
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+    }
 }
