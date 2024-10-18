@@ -1,70 +1,72 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-
-    static int n, m, k, x;
-    static ArrayList<Integer>[] map;
-    static int[] d;
-    static boolean[] visited;
-    static PriorityQueue<Integer> result = new PriorityQueue<>(((o1, o2) -> o1 - o2));
+    static int N, M, K, X;
+    static int [] D;
+    static List<Integer>[] graph;
+    static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        input();
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-        x = Integer.parseInt(st.nextToken());
-        map = new ArrayList[n + 1];
-        d = new int[n + 1];
-        visited = new boolean[n + 1];
+        PriorityQueue<node> q = new PriorityQueue<>((o1, o2) -> o1.d - o2.d);
+        q.add(new node(X, 0));
 
-        for (int i = 1; i < n + 1; i++) {
-            map[i] = new ArrayList<>();
+        node now;
+        int  next;
+        while (!q.isEmpty()){
+            now = q.poll();
+
+            for (int i = 0; i < graph[now.n].size(); i++) {
+                next = graph[now.n].get(i);
+                if(D[now.n] + 1 < D[next]){
+                    D[next] = D[now.n] + 1;
+                    q.add(new node(next, D[now.n] + 1));
+                }
+            }
         }
-        Arrays.fill(d, Integer.MAX_VALUE);
-        d[x] = 0;
+        for (int i = 1; i < N + 1; i++) {
+            if(i != X && K == D[i]) sb.append(i).append("\n");
+        }
+        if(sb.length() == 0) bw.append(String.valueOf(-1));
+        else bw.append(sb);
+        bw.flush();
+        bw.close();
+    }
 
-        int a, b;
-        for (int i = 0; i < m; i++) {
+    static void input() throws Exception{
+        st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        X = Integer.parseInt(st.nextToken());
+
+        D = new int[N + 1];
+        Arrays.fill(D, 100000000);
+        D[X] = 0;
+        graph = new ArrayList[N + 1];
+        for (int i = 1; i < N + 1; i++) graph[i] = new ArrayList<>();
+
+        int s, e;
+        for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            a = Integer.parseInt(st.nextToken());
-            b = Integer.parseInt(st.nextToken());
-            map[a].add(b);
-            if(a == x) d[b] = 1;
-        }
 
-        //n개의 노드에 대해서 다 해당 방법이 실행될 것임
-        // 처음에는 x부터
-//        int start = x;
-        ArrayDeque<Integer> q = new ArrayDeque<>();
-        q.add(x);
-        while(!q.isEmpty()){
-            int now = q.poll();
-            for (int i = 0; i < map[now].size(); i++) {
-                int next = map[now].get(i);
-                if(visited[next]) continue;
-                visited[next] = true;
-                d[next] = Math.min(d[now] + 1, d[next]);
-                q.add(next);
+            s = Integer.parseInt(st.nextToken());
+            e = Integer.parseInt(st.nextToken());
 
-            }
+            graph[s].add(e);
         }
-        for (int i = 1; i < n + 1; i++) {
-            if(d[i] == k) result.add(i);
-        }
-        if (result.isEmpty()) {
-            System.out.println(-1);
-        }else {
-            while (!result.isEmpty()) {
-                System.out.println(result.poll());
-            }
+    }
+
+    static class node{
+        int n, d;
+        node(int n, int d){
+            this.n = n;
+            this.d = d;
         }
     }
 }
