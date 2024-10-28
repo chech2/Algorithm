@@ -51,7 +51,7 @@ public class Main {
 
             if(files[i].size() < standard) {
                 for (int j = 0; j < files[i].size(); j++) now += files[i].get(j) + " ";
-                for(int j = files[i].size(); j < standard; j++) now += EMPTY;
+//                for(int j = files[i].size(); j < standard; j++) now += EMPTY;
 
             }else{
                 for(int j = 0; j < standard; j++) now += files[i].get(j) + " ";
