@@ -1,77 +1,81 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int N, M,ans;
-    static boolean visited[][][];
-    static int map[][];
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static int n, m;
+    static int[][] map;
+    static boolean[][][] visited;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static void main(String[] args) throws Exception {
+        pre_setting();
+        bw.append(String.valueOf(bfs()));
+        bw.close();
+    }
 
-    //상하좌우
-    static int dx[] = {-1, 1, 0, 0};
-    static int dy[] = {0, 0, -1, 1};
-
-
-    public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        Queue<node> q = new ArrayDeque<>();
-
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        map = new int[N][M];
-        visited = new boolean[N][M][2];
-        ans = -1;
-
-        for (int i = 0; i < N; i++) {
-            String str[] = br.readLine().split("");
-            for (int j = 0; j < M; j++) {
-                map[i][j] = Integer.parseInt(str[j]);
-            }
-        }
+    static int bfs(){
+        ArrayDeque<node> q = new ArrayDeque<>();
+//        PriorityQueue<node> q = new PriorityQueue<>((o1, o2) -> o1.t - o2.t);
         q.add(new node(0, 0, 1, 0));
         visited[0][0][0] = true;
 
-        while (!q.isEmpty()){
-            node now = q.poll();
-//            System.out.println(now.x + " " + now.y + " " + now.one_cnt);
-            if(now.x == N - 1 && now.y == M - 1){
-                ans = now.time;
-                break;
-            }
 
-            for (int i = 0; i < 4; i++) {
-                int x = now.x + dx[i];
-                int y = now.y + dy[i];
+        node now, next;
+        int nx, ny;
+        while(!q.isEmpty()){
+            now = q.poll();
 
-                if(x < 0 || x >= N || y < 0 || y >= M) continue;
-                if(visited[x][y][now.one_cnt]) continue;
-                if(map[x][y] == 1){
-                    if(now.one_cnt == 1) continue;
-                    else if(now.one_cnt == 0) {
-                        visited[x][y][now.one_cnt] = true;
-                        q.add(new node(x, y, now.time + 1, 1));
-                    }
+            if(now.x == n - 1 && now.y == m - 1) return now.t;
+            for(int i = 0; i < 4; i++){
+                nx = now.x + dx[i];
+                ny = now.y + dy[i];
+
+                if(nx < 0 || n <= nx || ny < 0 || m <= ny || visited[now.wall][nx][ny]) continue;
+                if(map[nx][ny] == 1 && now.wall == 0) {
+                    visited[1][nx][ny] = true;
+                    q.add(new node(nx, ny, now.t + 1, 1));
                 }
-                else{
-                    visited[x][y][now.one_cnt] = true;
-                    q.add(new node(x, y, now.time + 1, now.one_cnt));
+                else if(map[nx][ny] == 0) {
+                    visited[now.wall][nx][ny] = true;
+                    q.add(new node(nx, ny, now.t + 1, now.wall));
                 }
             }
         }
-//        if(ans == -1) System.out.println(0);
-         System.out.println(ans);
+        return -1;
+    }
+
+
+
+    static void pre_setting() throws Exception{
+        st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        map = new int[n][m];
+        visited = new boolean[2][n][m];
+
+        String[] tmp;
+        for(int i = 0; i < n; i++){
+            tmp = br.readLine().split("");
+
+            for(int j = 0; j < m; j++){
+                map[i][j] = Integer.parseInt(tmp[j]);
+            }
+        }
     }
 
     static class node{
-        int x, y, time, one_cnt;
-        node(int x, int y, int time, int one_cnt) {
+        int x, y, t, wall;
+
+        node(int x, int y, int t, int wall){
             this.x = x;
             this.y = y;
-            this.time = time;
-            this.one_cnt = one_cnt;
+            this.t = t;
+            this.wall = wall;
         }
     }
 }
