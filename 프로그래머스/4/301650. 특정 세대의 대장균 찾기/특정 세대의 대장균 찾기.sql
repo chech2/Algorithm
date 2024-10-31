@@ -1,12 +1,8 @@
 -- 코드를 작성해주세요
 
-select cc.id
-from ECOLI_DATA cc join 
-    (    
-        select c.id
-        from ECOLI_DATA c join ECOLI_DATA p
-        on c.PARENT_ID = p.id
-        where p.PARENT_ID is null	
-    ) pp
-on cc.PARENT_ID = pp.id
-order by cc.ID
+select a.id
+from ECOLI_DATA a 
+join ECOLI_DATA b on a.PARENT_ID = b.id
+join ECOLI_DATA c on b.PARENT_ID = c.id
+where c.PARENT_ID is null    
+order by a.ID
