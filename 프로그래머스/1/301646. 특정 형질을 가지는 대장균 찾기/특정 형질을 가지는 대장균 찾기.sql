@@ -2,4 +2,4 @@
 select count(*) as COUNT
 # select *, BIN(GENOTYPE) & 5
 from ECOLI_DATA
-where (BIN(GENOTYPE) & 2 != 2) && (BIN(GENOTYPE) & 5 != 0)
+where GENOTYPE & 2 != 2 && GENOTYPE & 5 != 0
