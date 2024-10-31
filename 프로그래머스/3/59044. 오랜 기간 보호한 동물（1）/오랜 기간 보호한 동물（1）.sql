@@ -1,13 +1,7 @@
 -- 코드를 입력하세요
-select NAME, DATETIME
-from ANIMAL_INS i
-where ANIMAL_ID in 
-(
-    SELECT ANIMAL_ID
-    from ANIMAL_INS i
-except
-    SELECT ANIMAL_ID
-    from ANIMAL_OUTS o
-)
-order by DATETIME
+select i.NAME, i.DATETIME
+from ANIMAL_INS i left join ANIMAL_OUTS o
+on i.ANIMAL_ID = o.ANIMAL_ID
+where o.ANIMAL_ID is null 
+order by i.DATETIME
 limit 3
