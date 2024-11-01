@@ -1,50 +1,58 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
     static int n, m;
-    static int arr[];
+    static int[] cards, finds;
+    static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception{
+        pre_setting();
+        for(int i = 0; i < m; i++){
+            sb.append(binary_search(finds[i])).append(" ");
+        }
+        bw.append(sb);
+        bw.close();
+    }
+
+    static int binary_search(int numbers){
+        int s, e, m;
+        s = 0;
+        e = n - 1;
+
+        while(s <= e){
+            m = (s + e) / 2;
+
+            if(cards[m] == numbers) return 1;
+
+            if(cards[m] < numbers){
+                s = m + 1;
+            }else{
+                e = m - 1;
+            }
+        }
+        return 0;
+    }
+
+    static void pre_setting() throws Exception{
         n = Integer.parseInt(br.readLine());
-        arr = new int[n];
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        cards = new int[n];
 
-        for(int i = 0 ; i < n; i++)
-            arr[i] = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) cards[i] = Integer.parseInt(st.nextToken());
 
-        // 숫자 카드 오름차순 정렬
-        Arrays.sort(arr);
+        Arrays.sort(cards);
 
         m = Integer.parseInt(br.readLine());
+        finds = new int[m];
+
         st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < m; i++) finds[i] = Integer.parseInt(st.nextToken());
 
-        for(int i = 0 ; i < m; i++) {
-            int num = Integer.parseInt(st.nextToken());
-            // 이분 탐색을 해서 해당 숫자가 있는 경우
-            if(binarySearch(num)) bw.write("1 ");
-            // 이분 탐색을 해서 해당 숫자가 없는 경우
-            else bw.write("0 ");
-        }
-
-        bw.close();
-        br.close();
     }
-    private static boolean binarySearch(int num) {
-        int leftIndex = 0;
-        int rightIndex = n - 1;
 
-        while(leftIndex <= rightIndex){
-            int midIndex = (leftIndex + rightIndex) / 2;
-            int mid = arr[midIndex];
-
-            if(num < mid) rightIndex = midIndex - 1;
-            else if(num > mid) leftIndex = midIndex + 1;
-            else return true;
-        }
-        return false;
-    }
 }
