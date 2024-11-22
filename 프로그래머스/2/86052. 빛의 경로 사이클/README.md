@@ -1,10 +1,10 @@
 # [level 2] 빛의 경로 사이클 - 86052 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/86052) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/86052#qna) 
 
 ### 성능 요약
 
-메모리: 106 MB, 시간: 64.65 ms
+메모리: 133 MB, 시간: 73.67 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 11월 20일 05:55:28
+2024년 11월 22일 17:24:58
 
 ### 문제 설명
 
