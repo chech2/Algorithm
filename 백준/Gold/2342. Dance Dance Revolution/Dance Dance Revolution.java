@@ -31,7 +31,7 @@ public class Main {
         ans = MAX;
         move = new HashMap<>();
 
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 8; i++){
             if(i == 4 || i == 6) move.put(i, 4);
             else move.put(i, 3);
         }
@@ -50,12 +50,12 @@ public class Main {
         // 오른발
         if(r == 0) rot = Math.min(recur(cnt + 1, next, l) + 2, rot);
         else if(r == next) rot = Math.min(recur(cnt + 1, next, l) + 1, rot);
-        else if(l != next) rot = Math.min(recur(cnt + 1, next, l) + move.get((r + next) % 7), rot);
+        else if(l != next) rot = Math.min(recur(cnt + 1, next, l) + move.get(r + next), rot);
 
         // 왼발
         if(l == 0) rot = Math.min(recur(cnt + 1, r, next) + 2, rot);
         else if(l == next) rot = Math.min(recur(cnt + 1, r, next) + 1, rot);
-        else if(r != next) rot = Math.min(recur(cnt + 1, r, next) + move.get((l + next) % 7), rot);
+        else if(r != next) rot = Math.min(recur(cnt + 1, r, next) + move.get(l + next), rot);
 
         return dp[cnt][r][l] = rot;
     }
