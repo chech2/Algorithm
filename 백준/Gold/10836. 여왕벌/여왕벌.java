@@ -28,16 +28,34 @@ public class Main {
 
             for (int i = m - 1; 0 <= i; i--) {
 
-                if(0 < zero[day]--) bee[i][0] += 0;
-                else if(0 < one[day]--) bee[i][0] += 1;
-                else if(0 < two[day]--) bee[i][0] += 2;
+                if(0 < zero[day]){
+                    bee[i][0] += 0;
+                    zero[day]--;
+                
+                } else if(0 < one[day]){
+                    bee[i][0] += 1;
+                    one[day]--;
+                    
+                } else if(0 < two[day]) {
+                    bee[i][0] += 2;
+                    two[day]--;
+                }
             }
 
             for (int i = 1; i < m; i++) {
+                
+                if(0 < zero[day]){
+                    bee[0][i] += 0;
+                    zero[day]--;
 
-                if(0 < zero[day]--) bee[0][i] += 0;
-                else if (0 < one[day]--) bee[0][i] += 1;
-                else if (0 < two[day]--) bee[0][i] += 2;
+                } else if(0 < one[day]){
+                    bee[0][i] += 1;
+                    one[day]--;
+
+                } else if(0 < two[day]) {
+                    bee[0][i] += 2;
+                    two[day]--;
+                }
             }
         }
 
