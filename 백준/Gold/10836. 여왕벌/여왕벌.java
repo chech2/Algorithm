@@ -3,15 +3,16 @@ import java.util.*;
 
 public class Main {
     static int n, m;
-    static int[][] bee, grow_info, diff;
+    static int[][] bee;
+    static int[] zero, one, two;
     static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
         pre_setting();
-        for(int i = 0; i < n; i++) grow(i);
-        
+        daily_grow();
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < m; j++) {
                 sb.append(bee[i][j]).append(" ");
@@ -22,39 +23,27 @@ public class Main {
         bw.close();
     }
 
-    static void grow(int day){
-        daily_setting(day);
+    static void daily_grow(){
+        for(int day = 0; day < n; day++) {
+
+            for (int i = m - 1; 0 <= i; i--) {
+
+                if(0 < zero[day]--) bee[i][0] += 0;
+                else if(0 < one[day]--) bee[i][0] += 1;
+                else if(0 < two[day]--) bee[i][0] += 2;
+            }
+
+            for (int i = 1; i < m; i++) {
+
+                if(0 < zero[day]--) bee[0][i] += 0;
+                else if (0 < one[day]--) bee[0][i] += 1;
+                else if (0 < two[day]--) bee[0][i] += 2;
+            }
+        }
 
         for(int i = 1; i < m; i++){
             for(int j = 1; j < m; j++){
-                diff[i][j] = Math.max(diff[i][j - 1], Math.max(diff[i - 1][j - 1], diff[i - 1][j]));
-                bee[i][j] += diff[i][j];
-            }
-        }
-    }
-
-    static void daily_setting(int day){
-        for (int i = m - 1; 0 <= i; i--) {
-
-            for(int j = 0; j < 3; j++) {
-                if(0 < grow_info[day][j]){
-                    diff[i][0] = j;
-                    bee[i][0] += j;
-                    grow_info[day][j]--;
-                    break;
-                }
-            }
-        }
-
-        for (int i = 1; i < m; i++) {
-            for(int j = 0; j < 3; j++) {
-                if(0 < grow_info[day][j]){
-                    diff[0][i] = j;
-                    bee[0][i] += j;
-                    grow_info[day][j]--;
-                    break;
-
-                }
+                bee[i][j] += Math.max(bee[i][j - 1], Math.max(bee[i - 1][j - 1], bee[i - 1][j])) - 1;
             }
         }
     }
@@ -64,15 +53,18 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
 
         bee = new int[m][m];
-        diff = new int[m][m];
-        grow_info = new int[n][3];
+        zero = new int[n];
+        one = new int[n];
+        two = new int[n];
 
         for (int i = 0; i < m; i++) Arrays.fill(bee[i], 1);
 
         for(int i = 0; i < n; i++){
             st = new StringTokenizer(br.readLine());
 
-            for(int j = 0; j < 3; j++) grow_info[i][j] = Integer.parseInt(st.nextToken());
+            zero[i] = Integer.parseInt(st.nextToken());
+            one[i] = Integer.parseInt(st.nextToken());
+            two[i] = Integer.parseInt(st.nextToken());
         }
     }
 }
