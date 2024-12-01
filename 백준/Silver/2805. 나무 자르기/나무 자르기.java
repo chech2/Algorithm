@@ -39,11 +39,8 @@ public class Main {
     static long cutting(int h){
         long ans = 0;
 
-        for(int i = 0; i < n; i++){
-            if(trees[i] <= h) continue;
+        for(int i = 0; i < n; i++) ans += Math.max(0, trees[i] - h);
 
-            ans += (trees[i] - h);
-        }
         return ans;
     }
 
