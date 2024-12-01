@@ -1,46 +1,63 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int N, M;
-    static long start, end, result, high;
-    static long[] tree;
+    static int n, m;
+    static int[] trees;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        pre_setting();
+        bw.append(String.valueOf(binarySearch()));
+        bw.close();
+    }
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        tree = new long[N];
+    static int binarySearch(){
+        int right,  left, h, ans;
+        long cuttingH;
 
+        right = 0;
+        left = trees[n - 1];
+        ans = left;
+
+        while(right <= left){
+            h = (right + left) / 2;
+            cuttingH = cutting(h);
+
+            if(cuttingH < m) left = h - 1;
+            else{
+                right = h + 1;
+                ans = h;
+            }
+        }
+        return ans;
+    }
+
+
+    static long cutting(int h){
+        long ans = 0;
+
+        for(int i = 0; i < n; i++){
+            if(trees[i] <= h) continue;
+
+            ans += (trees[i] - h);
+        }
+        return ans;
+    }
+
+
+    static void pre_setting() throws Exception{
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            tree[i] = Long.parseLong(st.nextToken());
-        }
 
-        Arrays.sort(tree);
-        end = tree[N - 1];
-        result = Long.MIN_VALUE;
-        while(start <= end){
-            long sum = 0;
-            high = (end + start) / 2;
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-            for (int i = 0; i < N; i++) {
-                long tmp = tree[i] - high;
-                if(tmp > 0) sum += tmp;
-            }
-            if(sum >= M){
-                start = high + 1;
-                result = Math.max(result, high);
-            }else{
-                end = high - 1;
-
-            }
-        }
-        System.out.println(result);
+        trees = new int[n];
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) trees[i] = Integer.parseInt(st.nextToken());
+        Arrays.sort(trees);
     }
 
 }
