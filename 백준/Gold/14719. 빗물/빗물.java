@@ -1,35 +1,42 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-import java.util.stream.Stream;
-
+import java.io.*;
+import java.util.*;
 public class Main {
-
-    static int right, left, high, width, ans;
+    static int h, w;
     static int[] map;
-
+    static StringTokenizer st;
+    static StringBuilder sb;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        high = Integer.parseInt(st.nextToken());
-        width = Integer.parseInt(st.nextToken());
-        map = Stream.of(br.readLine().split(" ")).mapToInt(Integer :: parseInt).toArray();
-        for (int now = 1; now < map.length - 1; now++) {
-          right = 0;
-          left = 0;
-
-            for (int i = 0; i < now; i++) {
-                left = Math.max(map[i], left);
-            }
-            for (int i = now + 1; i < map.length; i++) {
-                right = Math.max(map[i], right);
-            }
-            if(map[now] < right && map[now] < left){
-                ans += Math.min(right, left) - map[now];
-            }
-        }
-        System.out.println(ans);
+        pre_setting();
+        bw.append(sb.append(rain_check()));
+        bw.close();
     }
 
+    private static int rain_check() {
+        int ans, left, right;
+
+        ans = 0;
+        for(int now = 1; now < w - 1; now++){
+            left = 0;
+            right = 0;
+            for (int l = 0; l < now; l++) left = Math.max(map[l], left);
+            for (int r = now + 1; r < w; r++) right = Math.max(map[r], right);
+
+            ans += Math.max(Math.min(left, right) - map[now], 0);
+        }
+        return ans;
+    }
+
+    private static void pre_setting() throws Exception{
+        sb = new StringBuilder();
+        st = new StringTokenizer(br.readLine());
+
+        h = Integer.parseInt(st.nextToken());
+        w = Integer.parseInt(st.nextToken());
+        map = new int[w];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < w; i++) map[i] = Integer.parseInt(st.nextToken());
+    }
 }
