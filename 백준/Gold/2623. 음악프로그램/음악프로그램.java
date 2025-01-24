@@ -1,76 +1,69 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
+import java.sql.Struct;
+import java.util.*;
+import java.io.*;
 public class Main {
-
-    static int n, m, cnt;
-    static int[] p; // 진입차수
-    static ArrayList<Integer>[] list;
+    static int n, m;
+    static int[] d;
+    static List<Integer>[] graph;
+    static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        pre_setting();
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        if(singer_sort()) bw.append(sb);
+        else  bw.append('0');
+        bw.close();
+    }
 
-        list = new ArrayList[m];
-        p = new int[n + 1];
-        for (int i = 0; i < m; i++) {
-            list[i] = new ArrayList<>();
-        }
+    static boolean singer_sort(){
+        int cnt = n;
+        Queue<Integer> q = new ArrayDeque<>();
+        for(int i = 1; i < n + 1; i++) if(d[i] == 0) q.add(i);
 
-        int size, now, next;
-        for (int i = 0; i < m; i++) {
-            st = new StringTokenizer(br.readLine());
-            size = Integer.parseInt(st.nextToken());
-            for (int j = 0; j < size; j++) {
-                now = Integer.parseInt(st.nextToken());
-                list[i].add(now);
-                p[now] += j;
-            }
-        }
 
-        ArrayDeque<Integer> q = new ArrayDeque<>();
-        for (int i = 1; i < n + 1; i++) {
-            if(p[i] == 0) {
-                p[i]--;
-                q.add(i);
-                sb.append(i + "\n");
-            }
-        }
-        
-        boolean flag;
+        int now, next;
         while(!q.isEmpty()){
             now = q.poll();
-            cnt++;
-            for (int i = 0; i < m; i++) {
-                size = list[i].size();
-                flag = false;
-                for (int j = 0; j < size; j++) {
-                    next = list[i].get(j);
 
-                    if(next == now) flag = true;
-                    else if(flag) {
-                        p[next]--;
-                        if (p[next] == 0) {
-                            p[next] = -1;
+            if(d[now]-- == 0){
+                sb.append(now + "\n");
+                cnt--;
+            }
+            for(int i = 0; i < graph[now].size(); i++){
+                next = graph[now].get(i);
 
-                            q.add(next);
-                            sb.append(next + "\n");
-                        }
-                    }
-                }
+                d[next]--;
+                if(d[next] == 0) q.add(next);
             }
         }
+        if(cnt == 0) return true;
+        else return false;
 
-        if(cnt == n) System.out.println(sb);
-        else System.out.println(0);
+    }
+    static void pre_setting() throws Exception{
+        st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        graph = new ArrayList[n + 1];
+        d = new int[n + 1];
+
+        for(int i = 0; i < n + 1; i++) graph[i] = new ArrayList<>();
+
+        int SIZE, p, c;
+        for(int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            SIZE = Integer.parseInt(st.nextToken());
+            p =  Integer.parseInt(st.nextToken());
+            for(int j = 1; j < SIZE; j++) {
+                c = Integer.parseInt(st.nextToken());
+
+                graph[p].add(c);
+                d[c]++;
+                p = c;
+            }
+        }
     }
 }
