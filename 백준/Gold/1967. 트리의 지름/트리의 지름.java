@@ -2,67 +2,65 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    public static class node {
-        int v, p;
-        node(int v, int p){
-            this.v = v;
-            this.p = p;
-        }
-    }
-
-    static int n, ans, l;
+    
+    static int n, l, ans;
     static int[] d;
-    static List<node>[] graph;
+    static List<node>[] tree;
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        input();
-        dfs(1, 0, 0);
-
-
+        preSetting();
+        recur(1, 0 );
+        
         Arrays.fill(d, 0);
-        dfs(l, 0, 0);
+        
+        recur(l, 0);
         System.out.println(ans);
-
     }
 
-    public static void dfs(int now, int pre, int price){
+    static void recur(int now, int pre){
 
         node next;
-        for (int i = 0; i < graph[now].size(); i++) {
-            next = graph[now].get(i);
+        for(int i = 0; i < tree[now].size(); i++){
+            next = tree[now].get(i);
 
-            if(next.v == pre) continue;
-            d[next.v] += d[now] + next.p;
-            if(ans < d[next.v]){
-                ans = d[next.v];
-                l = next.v;
+            if(next.n == pre) continue;
+
+            d[next.n] += d[now] + next.c;
+            if(ans < d[next.n]){
+                ans = d[next.n];
+                l = next.n;
             }
-            dfs(next.v, now, price + next.p);
+            recur(next.n, now);
         }
     }
 
-    public static void input() throws Exception{
+    static void preSetting() throws Exception{
         n = Integer.parseInt(br.readLine());
+        tree = new ArrayList[n + 1];
         d = new int[n + 1];
-        graph = new List[n + 1];
 
-        for (int i = 0; i < n + 1; i++) {
-            graph[i] = new ArrayList<>();
-        }
+        for(int i = 0; i < n + 1; i++) tree[i] = new ArrayList<>();
 
-        int u, v, p;
-        for (int i = 0; i < n - 1; i++) {
+        int a, b, c;
+        for(int i = 0; i < n - 1; i++){
             st = new StringTokenizer(br.readLine());
 
-            u = Integer.parseInt(st.nextToken());
-            v = Integer.parseInt(st.nextToken());
-            p = Integer.parseInt(st.nextToken());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
 
-            graph[u].add(new node(v, p));
-            graph[v].add(new node(u, p));
+            tree[a].add(new node(b, c));
+            tree[b].add(new node(a, c));
         }
     }
 
+    static class node{
+        int n, c;
+
+        node(int n, int c){
+            this.n = n;
+            this.c = c;
+        }
+    }
 }
