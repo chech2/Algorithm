@@ -11,12 +11,8 @@ public class Main {
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        preSetting();
-        
-        for(int i = 0; i < 3; i++) {
-            dp[i][0][0] = recur(i, 0, 0) + map[0][0];
-        }
-        System.out.println(Math.max(Math.max(dp[0][0][0], dp[1][0][0]), dp[2][0][0]));
+        preSetting();    
+        System.out.println(recur(0, 0, 0) + map[0][0]);
     }
 
     static int recur(int d, int x, int y){
