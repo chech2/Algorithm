@@ -1,42 +1,36 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int n, size;
-    static ArrayList<Integer> list = new ArrayList<>();
-    static int[] dp;
-
+    static int n;
+    static int[][] dp;
+    static List<Integer> number;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        preSetting();
+
+        System.out.println( recur(number.size() - 1, n));
+    }
+
+    static int recur(int cnt, int total){
+        if(cnt < 0){
+            if(total == 0) return 0;
+            return 100001;
+        }
+        if(dp[cnt][total] != -1) return dp[cnt][total];
+        int now = number.get(cnt);
+        int nowTerm = (total / now);
+
+        // 이번꺼 스킵
+        return dp[cnt][total] = Math.min(recur(cnt - 1, total), recur(cnt - 1, total - nowTerm * now) + nowTerm);
+    }
+
+    static void preSetting() throws Exception{
         n = Integer.parseInt(br.readLine());
-        dp = new int[n];
-        Arrays.fill(dp, -1);
-        setting(n);
+        number = new ArrayList();
+        for(int i = 1; i <= n / i; i++) number.add(i * i);
 
-        size = list.size();
-        System.out.println(recur(0, 0));
-    }
-
-    public static int recur(int num, int start){
-        if(n < num) return 200000;
-        if(num == n) return 0;
-        if(dp[num] != -1) return dp[num];
-
-        int result = 200000;
-        for (int i = start; i < size; i++) {
-            result = Math.min(recur(num + list.get(i), i) + 1, result);
-        }
-        return dp[num] = result;
-    }
-
-    public static void setting(int n){
-        list.add(1);
-
-        for (int i = 2; i <= n / i; i++) {
-            list.add(i * i);
-        }
+        dp = new int[number.size()][n + 1];
+        for(int i = 0; i < number.size(); i++) Arrays.fill(dp[i], -1);
     }
 }
