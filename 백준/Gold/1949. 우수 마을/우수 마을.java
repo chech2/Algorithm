@@ -1,68 +1,60 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    static List<Integer>[] map;
+    static int[] p;
+    static int[][] dp;
     static int n;
-    static int[] people;
-    static int[][] dp; // dp[i][0]: 선택했을 때 최대 값, dp[i][1]: 선택하지 않았을 때의 최대 값
-    static ArrayList<Integer>[] graph;
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        input();
-        dfs(1, 0);
-
-        System.out.println(Math.max(dp[1][0], dp[1][1]));
-
+        inputSetting();
+        System.out.println(recur(0, 0, 0));
     }
 
+    static int recur(int now, int pre, int preflag){
+        if(dp[now][preflag] != -1) return dp[now][preflag];
 
-    public static void dfs(int now, int pre){
+        int next, rot;
+        dp[now][preflag] = 0;
+        for(int i = 0; i < map[now].size(); i++){
+            next = map[now].get(i);
+            rot = 0;
 
-        int next;
-        for (int i = 0; i < graph[now].size(); i++) {
-            next = graph[now].get(i);
             if(next == pre) continue;
+            if(preflag == 0) rot = recur(next, now, 1) + p[next];
+            rot = Math.max(rot, recur(next, now, 0));
 
-
-            dfs(next, now);
-
-            //현재 마을이 우수 마을인 경우, dp[now][0]
-            dp[now][0] += dp[next][1];                          //뒷 동네는 우수 마을 불가능
-
-            //현재 마을이 우수 마을이 아닌 경우
-            dp[now][1] += Math.max(dp[next][0], dp[next][1]);   //뒷 동네 우수 마을 가능
+            dp[now][preflag]+= rot;
         }
-        dp[now][0] += people[now];
+        return dp[now][preflag];
     }
 
-    public static void strToken() throws Exception{
-        st = new StringTokenizer(br.readLine());
-    }
-    public static void input() throws Exception{
-        strToken();
-        n = Integer.parseInt(st.nextToken());
-
-        people = new int[n + 1];
+    static void inputSetting() throws Exception{
+        n = Integer.parseInt(br.readLine());
+        map = new ArrayList[n + 1];
+        p = new int[n + 1];
         dp = new int[n + 1][2];
-        graph = new ArrayList[n + 1];
-        strToken();
-        for (int i = 1; i < n + 1; i++) {
-            graph[i] = new ArrayList<>();
-            people[i] = Integer.parseInt(st.nextToken());
+
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n + 1; i++){
+            map[i] = new ArrayList<>();
+            if(i != 0) p[i] = Integer.parseInt(st.nextToken());
+
+            Arrays.fill(dp[i], -1);
         }
 
-        int n1, n2;
-        for (int i = 0; i < n - 1; i++) {
-            strToken();
-            n1 = Integer.parseInt(st.nextToken());
-            n2 = Integer.parseInt(st.nextToken());
-            graph[n1].add(n2);
-            graph[n2].add(n1);
+        int a, b;
+        for(int i = 0; i < n - 1; i++){
+            st = new StringTokenizer(br.readLine());
+
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            map[a].add(b);
+            map[b].add(a);
         }
+        map[0].add(1);
+        map[1].add(0);
     }
-
 }
