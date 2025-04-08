@@ -11,48 +11,36 @@ public class Main {
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
         inputSetting();
-        test();
+        findThreeLiquid();
         bw.append(String.valueOf(seleted[0])).append(" ").append(String.valueOf(seleted[1])).append(" ").append(String.valueOf(seleted[2]));
 
         bw.close();
     }
 
-    static void test(){
-        long sum, tmp;
-
+    static void findThreeLiquid(){
         for(int i = 0; i < n - 2; i++){
-
-            for(int j = i + 1; j < n - 1; j++){
-                sum = liquid[i] + liquid[j];
-                tmp = search(j + 1, sum);
-
-                sum += tmp;
-
-                if(Math.abs(sum) < Math.abs(ans)) {
-                    ans = sum;
-                    seleted[0] = liquid[i];
-                    seleted[1] = liquid[j];
-                    seleted[2] = tmp;
-                }
-            }
+            towPoint(i + 1, liquid[i]);
         }
     }
 
-    static long search(int s, long sum){
-        int e, m;
-        long tmp = INF;
-        e = n - 1;
-        m = 0;
+    static void towPoint(int s, long first){
+        long now;
+        int e = n - 1;
 
-        while(s <= e){
-            m = (s + e) / 2;
+        while(s < e){
+            now = first + liquid[s] + liquid[e];
 
-            if (sum + liquid[m] < 0) s = m + 1;
-            else if (0 < sum + liquid[m]) e = m - 1;
-            else return liquid[m];
-            if(Math.abs(sum + liquid[m]) < Math.abs(sum + tmp)) tmp = liquid[m];
+            if(Math.abs(now) < Math.abs(ans)) {
+                ans = now;
+                seleted[0] = first;
+                seleted[1] = liquid[s];
+                seleted[2] = liquid[e];
+            }
+
+            if (now < 0) s++;
+            else if (0 < now) e--;
+            else break;
         }
-        return tmp;
     }
 
     static void inputSetting() throws Exception{
