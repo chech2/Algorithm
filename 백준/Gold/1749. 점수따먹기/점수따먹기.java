@@ -43,7 +43,6 @@ public class Main {
                 bord[i][j] = Integer.parseInt(st.nextToken());
 
                 s[i + 1][j + 1] = s[i][j + 1] + s[i + 1][j] - s[i][j] + bord[i][j];
-                ans = Math.max(ans, s[i + 1][j + 1]);
             }
         }
     }
