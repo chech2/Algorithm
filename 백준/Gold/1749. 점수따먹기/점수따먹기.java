@@ -2,19 +2,21 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int n, m, ans;
+    static int n, m;
     static int[][] bord, s;
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws Exception{
         inputSetting();
-        find();
-        System.out.println(ans);
+        bw.append(String.valueOf(find()));
+        bw.close();
     }
 
-    static void find(){
+    static int find(){
+        int ans, now;
+        ans = Integer.MIN_VALUE;
 
-        int now;
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < m + 1; j++){
 
@@ -26,6 +28,7 @@ public class Main {
                 }
             }
         }
+        return ans;
     }
 
     static void inputSetting() throws Exception{
@@ -35,7 +38,6 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         bord = new int[n][m];
         s = new int[n + 1][m + 1];
-        ans = Integer.MIN_VALUE;
 
         for(int i = 0; i < n; i++){
             st = new StringTokenizer(br.readLine());
