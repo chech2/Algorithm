@@ -8,20 +8,18 @@ public class Main {
                     else return o1.u - o2.u;
             });
 
-    static int INF = 1200001;
     static int n, d;
     static int[] memo;
-    static List<node>[] graph;
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
         inputSetting();
-        findMinLen();
-        System.out.println(memo[d]);
+        System.out.println(findMinLen());
     }
 
-    static void findMinLen(){
-        node now, next;
+    static int findMinLen(){
+        node now;
+        
         while(!q.isEmpty()){
             now = q.poll();
 
@@ -31,6 +29,8 @@ public class Main {
             if(d <= now.v || memo[now.v + 1] < memo[now.v] + 1) continue;
             q.add(new node(now.v, now.v + 1, 1));
         }
+
+        return memo[d];
     }
 
     static void inputSetting() throws Exception{
@@ -56,13 +56,12 @@ public class Main {
         }
     }
     static class node{
-        int u, v, origin, reduce,l;
+        int u, v, reduce, l;
         node(int u, int v, int l){
             this.u = u;
             this.v = v;
             this.l = l;
-            origin = v - u;
-            reduce = l - this.origin;
+            reduce = l - (v - u);
         }
     }
 }
