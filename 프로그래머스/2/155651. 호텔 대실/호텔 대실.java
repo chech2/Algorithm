@@ -14,12 +14,9 @@ class Solution {
             start = transfer(now[0].split(":"));
             end = transfer(now[1].split(":")) + 10;
             
-            // System.out.println(start + " " + end);
             timeLine[start]++;
             timeLine[end]--;
-            // System.out.println(timeLine[start] + " " + timeLine[end]);
         }
-        // System.out.println();
         
         for(int i = 1; i < 24 * 60 + 10; i++){
             timeLine[i] += timeLine[i - 1];
