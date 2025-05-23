@@ -1,7 +1,8 @@
 import java.util.*;
 
 class Solution {
-    List<Integer>[] tree;
+    int n;
+    List<Integer>[] graph;
     boolean[] visited;
     int[] d;
     public int solution(int n, int[][] edge) {
@@ -12,52 +13,54 @@ class Solution {
     }
     
     int bfs(){
-        int ans, max;
-        Queue<Integer> q = new ArrayDeque();
-        q.add(1);
+        PriorityQueue<node> q = new PriorityQueue<>((o1, o2) -> o1.d - o2.d);
+        q.add(new node(1, 1));
         visited[1] = true;
+
         
-        int next, now;
+        int next, answer;
+        node now;
+        answer = 0;
         while(!q.isEmpty()){
             now = q.poll();
             
-            for(int i = 0; i < tree[now].size(); i++){
-                next = tree[now].get(i);
-                
+            answer = Math.max(answer, now.d);
+            d[now.d] += 1;
+            for(int i = 0; i < graph[now.n].size(); i++){
+                next = graph[now.n].get(i);
                 if(visited[next]) continue;
-                visited[next] = true;
-                d[next] = d[now] + 1;
 
-                q.add(next);
+                visited[next] = true;
+                q.add(new node(next, now.d + 1));
             }
         }
-        
-        Arrays.sort(d);
-        ans = 0;
-        max = d[d.length - 1];
-        for(int i = d.length - 1; 0 < i; i--){
-            
-            if(d[i] < max) break;
-            ans++;
-        }
-        return ans;
+        return d[answer];
     }
     
     void preSetting(int n, int[][] edge){
-        tree = new ArrayList[n + 1];
-        d = new int[n + 1]; 
+        this.n = n;
+        graph = new ArrayList[n + 1];
         visited = new boolean[n + 1];
-        visited[1] = true;
+        d = new int[n + 1];
         
-        for(int i = 0; i < n + 1; i++) tree[i] = new ArrayList<>();
+        for(int i = 0; i < n + 1; i++) graph[i] = new ArrayList<>();
         
         int a, b;
         for(int i = 0; i < edge.length; i++){
             a = edge[i][0];
             b = edge[i][1];
             
-            tree[a].add(b);
-            tree[b].add(a);            
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+    }
+    
+    class node{
+        int n, d;
+        
+        node(int n, int d){
+            this.n = n;
+            this.d = d;
         }
     }
 }
