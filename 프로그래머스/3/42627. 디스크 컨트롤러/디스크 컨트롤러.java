@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     PriorityQueue<job> q;
-    int t;
+    int t, idx, finished_jobs, workingTime;
     int[][] jobs;
     
     public int solution(int[][] jobs) {
@@ -12,50 +12,22 @@ class Solution {
     }
     
     int working(){
-        int answer;
         int[] now;
         job pre;
         
-        answer = 0;
-        for(int i = 0; i < jobs.length; i++){
-            now = jobs[i];
-            if(t < now[0]){
-                
-                if(q.isEmpty()) t = now[0];
-                else i--;
-            }
+        while(finished_jobs != jobs.length){
+            idx = putQOvertime(idx, t);
             
-            if(now[0] <= t) i = putQOvertime(i, t);
             if(!q.isEmpty()){
                 pre = q.poll();
-                answer += calculation(pre);     
-
-            }
-        }
-        
-        while(!q.isEmpty()){
-            pre = q.poll();
-            
-            answer += calculation(pre);     
-        }
-        
-        return answer / jobs.length;
-    }
-    
-    int calculation(job pre){
-        int answer;
-        
-        if(t < pre.s){ // 시작시간을 지나지 않은 경우
-                answer = pre.t;
-                t = pre.t + pre.s;
-
-        }else{ // 시작시간을 지난 경우
-                answer = (t - pre.s) + pre.t;
+                
+                workingTime += (t - pre.s) + pre.t;
                 t += pre.t;
+                finished_jobs++;
+            } else t = jobs[idx][0];
         }
-        System.out.println(pre.n + " " + t);
         
-        return answer;
+        return workingTime / jobs.length;
     }
     
     int putQOvertime(int j, int t){
@@ -63,7 +35,7 @@ class Solution {
             q.add(new job(j, jobs[j][0], jobs[j][1]));             
             j++;
         }
-        return --j;
+        return j;
     }
     
     void setting(int[][] jobs) {
