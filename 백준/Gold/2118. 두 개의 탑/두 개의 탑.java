@@ -1,10 +1,9 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
 
-    static int n;
-    static int[] arr, cw, ccw;
+    static int n, sum;
+    static int[] arr;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
         inputSetting();
@@ -12,24 +11,29 @@ public class Main {
     }
 
     static int findMaxLen(){
-        int answer = 0;
+        int answer = -1;
+        int r, l, min, now;
+        r = 0;
+        l = 0;
+        now = arr[0];
 
-        for(int i = 0; i < n; i++){
-            for(int j = i + 1; j < n; j++){
-                answer = Math.max(answer, Math.min(cw[j] - cw[i], cw[n] - (cw[j] - cw[i])));
-            }
+        while(l <= r && r < n){
+            min = Math.min(now, sum - now);
+            answer = Math.max(min, answer);
+
+            if(min == now) now += arr[++r];
+            else now -= arr[l++];
         }
         return answer;
     }
 
     static void inputSetting() throws Exception{
         n = Integer.parseInt(br.readLine());
-        arr = new int[n];
-        cw = new int[n + 1];
+        arr = new int[n + 1];
 
         for(int i = 0; i < n; i++){
             arr[i] = Integer.parseInt(br.readLine());
-            cw[i + 1] += cw[i] + arr[i];
+            sum += arr[i];
         }
     }
 }
