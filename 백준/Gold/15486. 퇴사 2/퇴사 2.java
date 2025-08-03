@@ -1,35 +1,37 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int N;
-    static int[] memo;
-
+    static int n;
+    static int[] days, money, dp;
+    static StringTokenizer st;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        N = Integer.parseInt(br.readLine());
-        memo = new int[N + 2];
-
-        for (int i = 1; i < N + 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            dp(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), i);
-        }
-        if(memo[N + 1] == 0)  memo[N + 1] = memo[N];
-        memo[N + 1] = Math.max(memo[N + 1], memo[N]);
-
-        System.out.println(memo[N + 1]);
+        inputSetting();
+        System.out.println(buttounUp());
     }
 
+    static int buttounUp() {
+        dp[n] = 0;
 
-    public static void dp(int reduiredDay, int momey, int today){
-        int day = reduiredDay + today;
+        for(int i = n - 1; 0 <= i; i--){
+            dp[i] = Math.max(dp[i + 1], dp[i + days[i]] + money[i]);
+        }
+        return dp[0];
+    }
 
-        //오늘의 상담수익이 0이면, 전날까지의 상담수익의 최댓값이 오늘의 최댓값
-        memo[today] = Math.max(memo[today], memo[today - 1]);
+    static void inputSetting() throws Exception{
+        n = Integer.parseInt(br.readLine());
 
-        if(day < N + 2)
-        memo[day] = Math.max(memo[day], momey + memo[today]);
+        days = new int[n];
+        money = new int[n];
+        dp = new int[n + 50];
+        for(int i = 0; i < n; i++){
+            st = new StringTokenizer (br.readLine());
+
+            days[i] = Integer.parseInt(st.nextToken());
+            money[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.fill(dp, -10000);
     }
 }
