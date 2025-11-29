@@ -1,45 +1,49 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-
     static int n, m;
-    static int[] seleted;
+    static int[] selected;
     static boolean[] visited;
+    static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        seleted = new int[m];
-        visited = new boolean[n + 1];
-
-        perm(0);
-        System.out.println(sb);
+        inputSetting();
+        combi(0);
+        bw.append(sb);
+        bw.close();
     }
 
-    public static void perm(int cnt){
+    static void combi(int cnt){
         if(cnt == m){
-            for (int i = 0; i < m; i++) {
-                sb.append(seleted[i]).append(" ");
-            }
-            sb.append("\n");
+            print();
             return;
         }
 
-        for (int i = 1; i <= n; i++) {
+        for(int i = 1; i < n + 1; i++){
             if(visited[i]) continue;
+            selected[cnt] = i;
             visited[i] = true;
-            seleted[cnt] = i;
-            perm(cnt + 1);
+            combi( cnt + 1);
             visited[i] = false;
         }
+    }
+
+    static void print(){
+        for(int i = 0; i < m; i++){
+            sb.append(selected[i]).append(" ");
+        }
+        sb.append("\n");
+    }
+
+    static void inputSetting() throws Exception{
+        st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        selected = new int[m];
+        visited = new boolean[n + 1];
     }
 }
