@@ -1,35 +1,32 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
     static int n, ans;
-    static int[] grape;
+    static int[] wine;
     static int[][] dp;
+
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws Exception{
-        input();
+        n = Integer.parseInt(br.readLine());
+        wine = new int[n];
+        dp = new int[n][3];
+
+        for(int i = 0; i < n; i++){
+            wine[i] = Integer.parseInt(br.readLine());
+            Arrays.fill(dp[i], -1);
+        }
         System.out.println(recur(0, 0));
     }
 
-    public static int recur(int cnt, int seleted){
-        if(cnt == n){
-            return 0 ;
-        }
-        if(dp[cnt][seleted] != -1) return dp[cnt][seleted];
-        dp[cnt][seleted]= recur(cnt + 1, 0);
-        if(seleted < 2) dp[cnt][seleted] = Math.max(dp[cnt][seleted], recur(cnt + 1, seleted + 1) + grape[cnt]);
-        return dp[cnt][seleted];
-    }
+    public static int recur(int cnt, int seq){
+        if(cnt == n)return 0 ;
+        if(dp[cnt][seq] != -1) return dp[cnt][seq];
 
-    public static void input() throws Exception{
-        n = Integer.parseInt(br.readLine());
-        grape = new int[n];
-        dp = new int[n][3];
-        for (int i = 0; i < n; i++) {
-            grape[i] = Integer.parseInt(br.readLine());
-            Arrays.fill(dp[i], -1);
+        if(seq < 2){
+            dp[cnt][seq] = Math.max(recur(cnt + 1, seq + 1) + wine[cnt], dp[cnt][seq]);
         }
+        return  dp[cnt][seq] = Math.max(recur(cnt + 1, 0), dp[cnt][seq]);
     }
 }
