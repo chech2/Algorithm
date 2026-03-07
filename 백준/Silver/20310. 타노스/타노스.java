@@ -2,34 +2,59 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static final Character ONE = '1';
+    static final Character TWO = '2';
+    static final Character ZERO = '0';
 
     public static void main(String[] args) throws Exception{
         char[] origin = inputSetting();
-        String[] halfRemove = removeZeroAndOneHalf(origin);
-        Arrays.sort(halfRemove);
-
-        System.out.println(String.join("", halfRemove));
+        ArrayList<Character> list = removeZeroAndOneHalf(origin);
+        System.out.println(makingNewStr(list));
     }
+    
+    private static ArrayList<Character> removeZeroAndOneHalf(char[] origin){
+        ArrayList<Character> list = new ArrayList<>();
 
-    private static String[] removeZeroAndOneHalf(char[] origin){
-        StringBuilder sb = new StringBuilder();
-        HashMap<Character, Integer> map = new HashMap<>();
-
+        int zero = 0;
+        int one = 0;
         for (int i = 0; i < origin.length; i++) {
-            if(map.containsKey(origin[i])) map.put(origin[i], map.get(origin[i]) + 1);
-            else map.put(origin[i], 1);
+            if(origin[i] == ONE){
+                one++;
+            } else {
+                zero++;
+            }
+            list.add(origin[i]);
         }
-
-        for(Map.Entry<Character, Integer> entry : map.entrySet()){
-            if(entry.getKey() == '0' || entry.getKey() == '1') entry.setValue(entry.getValue() / 2);
-
-            for(int i = 0; i < entry.getValue(); i++) {
-                sb.append(entry.getKey());
+        one /= 2;
+        zero /= 2;
+        for (int i = list.size() - 1; 0 <= i; i--) {
+            if(0 < zero && list.get(i) == ZERO){
+                list.set(i, TWO);
+                zero--;
             }
         }
-        return sb.toString().split("");
-    }
 
+        for (int i = 0; i < list.size(); i++) {
+            if(0 < one && list.get(i) == ONE){
+                list.set(i, TWO);
+                one--;
+            }
+        }
+        return list;
+    }
+    
+    private static String makingNewStr(ArrayList<Character> list ){
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i) != TWO){
+                sb.append(list.get(i));
+            }
+        }
+        
+        return sb.toString();
+    }
+    
     private static char[] inputSetting() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         return br.readLine().toCharArray();
