@@ -2,41 +2,58 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    static int[] info;
-    static int[][] arr, copyArr;
-    static StringTokenizer st;
-    static StringBuilder sb = new StringBuilder();
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static int h, w, x, y;
+    static int[][] A, B;
     public static void main(String[] args) throws Exception {
-        st = new StringTokenizer(br.readLine());
+        preSetting();
+        findOriginArr();
+    }
 
-        info = new int[4];
-        for (int i = 0; i < 4; i++) info[i] = Integer.parseInt(st.nextToken());
-        arr = new int[info[0]][info[1]];
-        copyArr = new int[info[0] + info[2]][info[1] + info[3]];
-        int x, y;
-        for (int i = 0; i < info[0] + info[2]; i++) {
-            st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < info[1] + info[3]; j++) {
-                copyArr[i][j] = Integer.parseInt(st.nextToken());
+    static void findOriginArr(){
+        int[][] origin = new int[h][w];
 
-                x = i - info[2];
-                y = j - info[3];
-
-                if (i < info[0] && j < info[1]) {
-                    if (0 <= x && x < info[0] && 0 <= y && y < info[1]) arr[i][j] = copyArr[i][j] -  arr[x][y];
-                    else arr[i][j] = copyArr[i][j];
-
-                    if(j < info[1] - 1) sb.append(arr[i][j]).append(" ");
-                    else sb.append(arr[i][j]);
-                }
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < w; j++){
+                origin[i][j] = B[i][j];
             }
-            if(i < info[0]) sb.append("\n");
+        }
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < y; j++){
+                origin[i][j] = B[i][j];
+            }
+        }
+        for(int i = x; i < h; i++){
+            for(int j = y; j < w; j++){
+                origin[i][j] = B[i][j] - origin[i - x][j - y];
+            }
         }
 
-        bw.append(sb);
-        bw.close();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w; j++){
+                sb.append(origin[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+
+        System.out.println(sb.toString());
+    }
+
+    static void preSetting() throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        h = Integer.parseInt(st.nextToken());
+        w = Integer.parseInt(st.nextToken());
+        x = Integer.parseInt(st.nextToken());
+        y = Integer.parseInt(st.nextToken());
+
+        B = new int[h + x][w + y];
+        for(int i = 0; i < h; i++){
+            st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < w; j++){
+                B[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
     }
 }
