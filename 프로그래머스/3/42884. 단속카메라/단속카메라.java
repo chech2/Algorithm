@@ -10,32 +10,23 @@ class Solution {
             return o2[1] - o1[1];
         });
         
-        // for(int now = 0; now < routes.length; now++) System.out.println(Arrays.toString(routes[now]));
-
-        
         for(int now = 0; now < routes.length; now++) {
             
             jump = 0;
             l = routes[now][0];
             r = routes[now][1];
-            // System.out.println(now + "번 " + l + " " + r);
+
             for(int next = now + 1; next < routes.length; next++){
                 
                 nl = routes[next][0];
                 nr = routes[next][1];
                 
-                if(l <= nl && nr <= r){
-                    l = nl;
-                    r = nr;
-                    jump++; 
-                    
-                } else if(l <= nr){
-                    r = nr;
-                    jump++;
-                    
-                } else break;
+                if(nr < l) break;
+                if(l <= nl && nr <= r) l = nl;
+                
+                r = nr;
+                jump++;
             }
-            // System.out.println("      " + l + " " + r);
 
             now += jump;
             answer++;
