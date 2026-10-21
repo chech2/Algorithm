@@ -11,8 +11,3 @@ JOIN AUTHOR A
 ON B.AUTHOR_ID = A.AUTHOR_ID
 GROUP BY B.AUTHOR_ID, B.CATEGORY
 ORDER BY B.AUTHOR_ID, B.CATEGORY DESC
-
-
-# select * , count(book_id) from book group by AUTHOR_ID, CATEGORY
-
-# select * from book
