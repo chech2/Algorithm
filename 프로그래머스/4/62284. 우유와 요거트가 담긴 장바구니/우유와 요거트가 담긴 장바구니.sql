@@ -1,0 +1,15 @@
+/*
+    우유와 요거트 동시 구입한 아이디 조회
+    
+    아이디순 
+
+*/
+
+SELECT CART_ID
+FROM CART_PRODUCTS
+WHERE NAME = 'Milk'
+INTERSECT
+SELECT CART_ID
+FROM CART_PRODUCTS
+WHERE NAME = 'Yogurt'
+ORDER BY CART_ID
