@@ -1,0 +1,24 @@
+/*
+    조건1. 자동차 종류가 '세단' or 'SUV'
+    조건2. 2022년 11월 1일 ~ 2022년 11월 30일 까지 대여 가능
+    조건3. 30일간의 대여 금액이 50만원 이상 200만원 미만
+    
+    출력 컬럼: 자동차 ID, 자동차 종류, 대역금액 FEE
+    정렬 조건: 대여 금액 내림차순, 자동차 종류 오름차순, 자동차 ID 내림차순
+
+*/
+
+SELECT C.CAR_ID, C.CAR_TYPE, DAILY_FEE * 30 * (1 - DP.DISCOUNT_RATE / 100) AS FEE
+FROM CAR_RENTAL_COMPANY_CAR C
+JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN DP
+ON C.CAR_TYPE = DP.CAR_TYPE
+AND DP.DURATION_TYPE = '30일 이상'
+WHERE C.CAR_TYPE IN ('세단', 'SUV')
+AND C.CAR_ID NOT IN (
+    SELECT CAR_ID
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY RH
+    WHERE RH.START_DATE <= '2022-11-30' AND '2022-11-01' <= RH.END_DATE
+)
+HAVING 500000 <= FEE  AND FEE <= 2000000
+ORDER BY FEE DESC, C.CAR_TYPE, C.CAR_ID DESC
+ 
